@@ -1,5 +1,6 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "./_components/app-sidebar";
+
 export default function DefaultLayout({
     children,
 }: {
@@ -8,10 +9,11 @@ export default function DefaultLayout({
     return (
         <SidebarProvider>
             <AppSidebar />
-            <main className="min-h-screen">
-                TODO
-                {children}
-            </main>
+            <SidebarInset>
+                <main className="min-h-screen">
+                    {children}
+                </main>
+            </SidebarInset>
         </SidebarProvider>
     );
 }
