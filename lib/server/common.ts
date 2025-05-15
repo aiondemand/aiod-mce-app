@@ -1,0 +1,1 @@
+export const baseURL = process.env.BACKEND_URL || ''

@@ -5,6 +5,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Link from "next/link";
 import { ChevronRight, LogOutIcon } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import UserButton from "./user-button";
 
 const AppSidebar: React.FC = () => {
     const navItems = [
@@ -161,7 +162,7 @@ const AppSidebar: React.FC = () => {
         </SidebarContent>
 
         <SidebarFooter>
-            user button
+            <UserButton />
         </SidebarFooter>
     </Sidebar>;
 };
