@@ -1,6 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { AssetList } from "./asset-list";
 import { ErrorAlert } from "@/components/error-alert";
+import { getAssets } from "@/lib/server/assets";
 
 interface AssetListLoaderProps {
     assetType: string;
@@ -10,21 +11,21 @@ export const AssetListLoader: React.FC<AssetListLoaderProps> = async ({ assetTyp
     // await new Promise(resolve => setTimeout(resolve, 4000));
 
     // TODO: fetch assets
+    const { assets, error } = await getAssets(assetType, 10);
 
-    // TODO: show error if loading fails
-    const error = false;
+
     if (error) {
         return <div className="flex justify-center items-center h-full py-8">
             <ErrorAlert
                 title="Error loading assets"
-                description="Description of the error"
+                description={error}
             />
         </div>
     }
 
     return <AssetList
         assetType={assetType}
-        assets={[]}
+        assets={assets ?? []}
     />
 }
 

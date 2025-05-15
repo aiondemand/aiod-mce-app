@@ -17,11 +17,11 @@ export const navItems = [
             },
             {
                 label: "ML Models",
-                url: "/my-assets/ml-models"
+                url: "/my-assets/ml_models"
             },
             {
                 label: "Computational Assets",
-                url: "/my-assets/computational-assets"
+                url: "/my-assets/computational_assets"
             },
             {
                 label: "Service",
@@ -37,7 +37,7 @@ export const navItems = [
             },
             {
                 label: "Case Studies",
-                url: "/my-assets/case-studies"
+                url: "/my-assets/case_studies"
             }
         ]
     },
@@ -56,7 +56,7 @@ export const navItems = [
     },
     {
         label: "Educational Resources",
-        url: "/my-assets/educational-resources"
+        url: "/my-assets/educational_resources"
     },
     {
         label: "Supporting Context",

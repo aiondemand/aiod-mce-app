@@ -90,9 +90,9 @@ export const AssetList: React.FC<AssetListProps> = ({ assetType, assets }) => {
                 </div>
             }
 
-            <ul className="space-y-4">
+            <ul className="space-y-2">
                 {assets.map((asset) => (
-                    <li key={asset.id}>
+                    <li key={asset.identifier}>
                         <AssetCard asset={asset} />
                     </li>
                 ))}

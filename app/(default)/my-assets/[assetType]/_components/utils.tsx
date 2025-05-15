@@ -1,8 +1,8 @@
 
 export interface GenericAsset {
-    id: string;
+    identifier?: number;
     name: string;
-    aiod_entry: {
+    aiod_entry?: {
         status: string;
     }
 }
