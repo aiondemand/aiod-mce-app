@@ -1,7 +1,10 @@
 import { LoginButton } from "@/components/login-button";
 import { testAuth } from "@/lib/server/auth";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+
+  redirect("/my-assets/datasets")
 
   const resp = await testAuth()
   console.log(resp)
