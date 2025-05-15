@@ -6,7 +6,7 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { AssetCard } from "./asset-card";
 import { GenericAsset } from "./utils";
-
+import { useState } from "react";
 
 interface AssetListProps {
     assetType: string;
@@ -49,12 +49,23 @@ const assetTypeToLabel = (assetType: string) => {
 }
 
 export const AssetList: React.FC<AssetListProps> = ({ assetType, assets }) => {
+    const [search, setSearch] = useState("");
+
+    const filteredAssets = assets.filter((asset) => {
+        return asset.name.toLowerCase().includes(search.toLowerCase());
+    });
+
     return <div>
         <div className="flex items-center justify-end gap-8">
             <Input
                 placeholder="Search"
                 className="rounded-full"
                 disabled={assets.length < 1}
+                value={search}
+                onChange={(e) => {
+                    const value = e.target.value.trim();
+                    setSearch(value)
+                }}
             />
 
             <Button
@@ -69,10 +80,10 @@ export const AssetList: React.FC<AssetListProps> = ({ assetType, assets }) => {
         </div>
 
         <div className="mt-8">
-            {assets.length < 1 &&
+            {filteredAssets.length < 1 &&
                 <div>
                     <div className="flex flex-col gap-8 justify-center items-center h-full py-8">
-                        <p className="text-sm text-muted-foreground">No assets found in this category</p>
+                        <p className="text-sm text-muted-foreground">No assets found in this with the current search.</p>
                         <Button
                             className="rounded-full"
                             asChild
@@ -91,7 +102,7 @@ export const AssetList: React.FC<AssetListProps> = ({ assetType, assets }) => {
             }
 
             <ul className="space-y-2">
-                {assets.map((asset) => (
+                {filteredAssets.map((asset) => (
                     <li key={asset.identifier}>
                         <AssetCard
                             assetType={assetType}

@@ -8,10 +8,7 @@ interface AssetListLoaderProps {
 }
 
 export const AssetListLoader: React.FC<AssetListLoaderProps> = async ({ assetType }) => {
-    // await new Promise(resolve => setTimeout(resolve, 4000));
-
-    // TODO: fetch assets
-    const { assets, error } = await getAssets(assetType, 10);
+    const { assets, error } = await getAssets(assetType);
 
 
     if (error) {
