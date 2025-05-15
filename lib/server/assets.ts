@@ -31,7 +31,6 @@ export const getAssets = async (assetType: string, limit: number = 1000, offset:
         }
 
         const data = await response.json();
-        console.log(data);
         return {
             assets: data
         };

@@ -1,14 +1,18 @@
 import { cn } from "@/lib/utils";
 import { GenericAsset } from "./utils";
 import { PencilIcon } from "lucide-react";
+import Link from "next/link";
 
 interface AssetCardProps {
     asset: GenericAsset;
+    assetType: string;
 }
 
-export const AssetCard: React.FC<AssetCardProps> = ({ asset }) => {
+export const AssetCard: React.FC<AssetCardProps> = ({ asset, assetType }) => {
 
-    return <div className="relative flex items-center justify-between px-4 py-2 border border-border rounded-full group hover:bg-secondary transition-colors">
+    return <Link
+        href={`/my-assets/${assetType}/editor/${asset.identifier}`}
+        className="relative cursor-pointer flex items-center justify-between px-4 py-2 border border-border rounded-full group hover:bg-secondary transition-colors">
         {asset.name}
         <div className={cn(
             "text-xs px-4 py-1 rounded-full",
@@ -21,6 +25,6 @@ export const AssetCard: React.FC<AssetCardProps> = ({ asset }) => {
         <div className="hidden group-hover:flex absolute -left-6 top-0 items-center h-full">
             <PencilIcon className="size-4 text-muted-foreground" />
         </div>
-    </div>
+    </Link>
 
 }
