@@ -21,8 +21,10 @@ const assetTypeToLabel = (assetType: string) => {
             return "Publications";
         case "case-studies":
             return "Case Studies";
-        case "news-and-events":
-            return "News & Events";
+        case "news":
+            return "News";
+        case "events":
+            return "Events";
         case "educational-resources":
             return "Educational Resources";
         case "organisations":
@@ -43,9 +45,9 @@ export default async function Page({ params }: PageProps) {
 
     return <div className="p-8">
         <h1 className="text-2xl font-bold font-jura">
-            My Assets
-            <span className="text-muted-foreground ms-2">
-                ({assetTypeToLabel(assetType)})
+            My Assets -
+            <span className="text-secondary-foreground ms-2">
+                {assetTypeToLabel(assetType)}
             </span>
         </h1>
 

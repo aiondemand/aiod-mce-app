@@ -43,7 +43,16 @@ export const navItems = [
     },
     {
         label: "News & Events",
-        url: "/my-assets/news-and-events"
+        items: [
+            {
+                label: "News",
+                url: "/my-assets/news"
+            },
+            {
+                label: "Events",
+                url: "/my-assets/events"
+            }
+        ]
     },
     {
         label: "Educational Resources",
