@@ -35,7 +35,7 @@ export const NavLinks: React.FC<{ navItems: NavItem[] }> = ({ navItems }) => {
                             >
                                 <SidebarMenuButton
                                     asChild
-                                    className={cn("text-base h-auto px-6 py-4 font-jura text-sidebar-foreground bg-secondary rounded-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground", pathname.startsWith(item.url!) && "font-medium underline underline-offset-4")}
+                                    className={cn("text-base h-auto px-6 py-4 font-jura text-sidebar-foreground bg-secondary rounded-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground", pathname.startsWith(item.url!) && "font-medium text-secondary-foreground underline underline-offset-4")}
                                 >
                                     <Link
                                         href={item.url!}
@@ -73,7 +73,7 @@ export const NavLinks: React.FC<{ navItems: NavItem[] }> = ({ navItems }) => {
                                         {item.items.map((item) => (
                                             <SidebarMenuItem key={item.label}>
                                                 <SidebarMenuButton asChild
-                                                    className={cn("mt-[2px] text-sm h-auto px-6 py-4 font-sans text-sidebar-foreground rounded-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground opacity-80", pathname.startsWith(item.url!) && "font-medium underline underline-offset-4")}
+                                                    className={cn("mt-[2px] text-sm h-auto px-6 py-4 font-sans text-sidebar-foreground rounded-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground opacity-80", pathname.startsWith(item.url!) && "font-medium text-secondary-foreground underline underline-offset-4")}
                                                 >
                                                     <Link href={item.url!}>
                                                         {item.label}

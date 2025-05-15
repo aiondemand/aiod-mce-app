@@ -42,15 +42,17 @@ export default async function Page({ params }: PageProps) {
     const { assetType } = await params;
 
     return <div className="p-8">
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-2xl font-bold font-jura">
             My Assets
             <span className="text-muted-foreground ms-2">
                 ({assetTypeToLabel(assetType)})
             </span>
         </h1>
 
-        <Suspense fallback={<AssetListLoaderSkeleton />}>
-            <AssetListLoader assetType={assetType} />
-        </Suspense>
+        <div className="mt-8">
+            <Suspense fallback={<AssetListLoaderSkeleton />}>
+                <AssetListLoader assetType={assetType} />
+            </Suspense>
+        </div>
     </div>
 }
