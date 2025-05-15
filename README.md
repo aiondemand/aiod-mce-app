@@ -29,6 +29,16 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Create local variables
+
+Create a file called `.env.local` with content:
+```
+AUTH_SECRET="..."
+AUTH_KEYCLOAK_ID=...
+AUTH_KEYCLOAK_SECRET=...
+AUTH_KEYCLOAK_ISSUER=... (e.g. https://aiod-dev.i3a.es/aiod-auth/realms/aiod)
+BACKEND_URL=... (e.g. https://aiod-dev.i3a.es)
+```
 
 ## Auth
 
