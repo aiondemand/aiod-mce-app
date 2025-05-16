@@ -14,27 +14,44 @@ const fetchEnum = async (enumName: string): Promise<string[]> => {
     }
 }
 
+export interface Enums {
+    eventModes: string[];
+    eventStatus: string[];
+    applicationAreas: string[];
+    industrialSectors: string[];
+    researchAreas: string[];
+    scienticDomains: string[];
+    publicationTypes: string[];
+    eduAccessModes: string[];
+    eduEducationalLevels: string[];
+    eduPaces: string[];
+    eduPrerequisites: string[];
+    eduTargetAudiences: string[];
+    eduType: string[];
+    languages: string[];
+}
 
-const enumNames = [
-    'event_modes',
-    'event_status',
-    'application_areas',
-    'industrial_sectors',
-    'research_areas',
-    'scientific_domains',
-    'publication_types',
-    'edu_access_modes',
-    'edu_educational_levels',
-    'edu_paces',
-    'edu_prerequisites',
-    'edu_target_audiences',
-    'educational_resource_types',
-    'languages',
-]
+
+const enumNames = {
+    eventModes: 'event_modes',
+    eventStatus: 'event_status',
+    applicationAreas: 'application_areas',
+    industrialSectors: 'industrial_sectors',
+    researchAreas: 'research_areas',
+    scienticDomains: 'scientific_domains',
+    publicationTypes: 'publication_types',
+    eduAccessModes: 'edu_access_modes',
+    eduEducationalLevels: 'edu_educational_levels',
+    eduPaces: 'edu_paces',
+    eduPrerequisites: 'edu_prerequisites',
+    eduTargetAudiences: 'edu_target_audiences',
+    eduType: 'educational_resource_types',
+    languages: 'languages',
+}
 
 
-export const fetchAllEnums = async () => {
-    const newEnums = {
+export const fetchAllEnums = async (): Promise<Enums> => {
+    const newEnums: Enums = {
         eventModes: [] as string[],
         eventStatus: [] as string[],
         applicationAreas: [] as string[],
@@ -51,8 +68,8 @@ export const fetchAllEnums = async () => {
         languages: [] as string[],
     }
 
-    await Promise.all(enumNames.map(async (enumName) => {
-        const enumData = await fetchEnum(enumName);
+    await Promise.all(Object.keys(enumNames).map(async (enumName) => {
+        const enumData = await fetchEnum(enumNames[enumName as keyof typeof enumNames]);
         newEnums[enumName as keyof typeof newEnums] = enumData;
     }));
 

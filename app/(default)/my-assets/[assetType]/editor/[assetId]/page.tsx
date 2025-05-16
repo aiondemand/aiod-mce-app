@@ -6,7 +6,7 @@ import AssetEditor from "./_components/asset-editor";
 import DeleteAssetBtn from "./_components/delete-asset-btn";
 import { getAsset } from "@/lib/server/assets";
 import { ErrorAlert } from "@/components/error-alert";
-
+import { fetchAllEnums } from "@/lib/server/enums";
 interface PageProps {
     params: Promise<{ assetType: string, assetId: string }>
 }
@@ -14,6 +14,7 @@ interface PageProps {
 export default async function Page({ params }: PageProps) {
     const { assetType, assetId } = await params;
 
+    const enums = await fetchAllEnums();
     const isNew = assetId === "new";
 
     let content: React.ReactNode;
@@ -32,6 +33,7 @@ export default async function Page({ params }: PageProps) {
                 assetId={assetId}
                 isNewAsset={isNew}
                 asset={assetResp.asset}
+                enums={enums}
             />
         }
     } else {
@@ -39,6 +41,7 @@ export default async function Page({ params }: PageProps) {
             assetType={assetType}
             assetId={assetId}
             isNewAsset={isNew}
+            enums={enums}
         />
     }
 
