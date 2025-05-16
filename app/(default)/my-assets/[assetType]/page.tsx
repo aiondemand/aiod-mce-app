@@ -9,9 +9,9 @@ const assetTypeToLabel = (assetType: string) => {
     switch (assetType) {
         case "datasets":
             return "Data Sets";
-        case "ml-models":
+        case "ml_models":
             return "ML Models";
-        case "computational-assets":
+        case "computational_assets":
             return "Computational Assets";
         case "services":
             return "Services";
@@ -19,13 +19,13 @@ const assetTypeToLabel = (assetType: string) => {
             return "Experiments";
         case "publications":
             return "Publications";
-        case "case-studies":
+        case "case_studies":
             return "Case Studies";
         case "news":
             return "News";
         case "events":
             return "Events";
-        case "educational-resources":
+        case "educational_resources":
             return "Educational Resources";
         case "organisations":
             return "Organisations";
@@ -43,7 +43,7 @@ const assetTypeToLabel = (assetType: string) => {
 export default async function Page({ params }: PageProps) {
     const { assetType } = await params;
 
-    return <div className="p-8">
+    return <>
         <h1 className="text-2xl font-bold font-jura">
             My Assets -
             <span className="text-secondary-foreground ms-2">
@@ -56,5 +56,5 @@ export default async function Page({ params }: PageProps) {
                 <AssetListLoader assetType={assetType} />
             </Suspense>
         </div>
-    </div>
+    </>
 }

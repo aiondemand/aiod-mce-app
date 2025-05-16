@@ -7,45 +7,11 @@ import Link from "next/link";
 import { AssetCard } from "./asset-card";
 import { GenericAsset } from "./utils";
 import { useState } from "react";
+import { assetTypeToLabel } from "./utils";
 
 interface AssetListProps {
     assetType: string;
     assets: Array<GenericAsset>;
-}
-
-const assetTypeToLabel = (assetType: string) => {
-    switch (assetType) {
-        case "datasets":
-            return "Data Set";
-        case "ml-models":
-            return "ML Model";
-        case "computational-assets":
-            return "Computational Asset";
-        case "services":
-            return "Service";
-        case "experiments":
-            return "Experiment";
-        case "publications":
-            return "Publication";
-        case "case-studies":
-            return "Case Study";
-        case "news":
-            return "News Item";
-        case "events":
-            return "Event";
-        case "educational-resources":
-            return "Educational Resource";
-        case "organisations":
-            return "Organisation";
-        case "persons":
-            return "Person";
-        case "projects":
-            return "Project";
-        case "platforms":
-            return "Platform";
-        default:
-            return assetType;
-    }
 }
 
 export const AssetList: React.FC<AssetListProps> = ({ assetType, assets }) => {
