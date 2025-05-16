@@ -1,14 +1,16 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { AssetList } from "./asset-list";
 import { ErrorAlert } from "@/components/error-alert";
-import { getAssets } from "@/lib/server/assets";
+import { getMyAssets } from "@/lib/server/assets";
+import { assetTypeToMyAssetType } from "./utils";
 
 interface AssetListLoaderProps {
     assetType: string;
 }
 
+
 export const AssetListLoader: React.FC<AssetListLoaderProps> = async ({ assetType }) => {
-    const { assets, error } = await getAssets(assetType);
+    const { assets, error } = await getMyAssets();
 
 
     if (error) {
@@ -20,9 +22,11 @@ export const AssetListLoader: React.FC<AssetListLoaderProps> = async ({ assetTyp
         </div>
     }
 
+    const assetsForType = assets?.[assetTypeToMyAssetType(assetType)];
+
     return <AssetList
         assetType={assetType}
-        assets={assets ?? []}
+        assets={assetsForType?.filter((asset) => !asset.date_deleted) ?? []}
     />
 }
 

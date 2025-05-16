@@ -41,3 +41,38 @@ export const assetTypeToLabel = (assetType: string) => {
             return assetType;
     }
 }
+
+export const assetTypeToMyAssetType = (assetType: string) => {
+    switch (assetType) {
+        case "datasets":
+            return "dataset";
+        case "ml_models":
+            return "ml_model";
+        case "computational_assets":
+            return "computational_asset";
+        case "services":
+            return "service";
+        case "experiments":
+            return "experiment";
+        case "publications":
+            return "publication";
+        case "case_studies":
+            return "case_study";
+        case "news":
+            return "news";
+        case "events":
+            return "event";
+        case "educational_resources":
+            return "educational_resource";
+        case "organisations":
+            return "organisation";
+        case "persons":
+            return "person";
+        case "projects":
+            return "project";
+        case "platforms":
+            return "platform";
+        default:
+            return assetType;
+    }
+}

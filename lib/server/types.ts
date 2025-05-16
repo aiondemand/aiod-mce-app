@@ -105,6 +105,7 @@ const resourceBaseSchema = z.object({
   platform_resource_identifier: z.number().optional(),
   name: z.string().min(2).max(256),
   date_published: z.string().datetime().optional(),
+  date_deleted: z.string().datetime().optional(),
   same_as: z.string().max(256).optional(),
   aiod_entry: AiodEntrySchema.optional(),
   alternate_name: z.array(z.string()).optional(),
@@ -196,14 +197,14 @@ export const publicationSchema = resourceBaseSchema.extend({
 export type Publication = z.infer<typeof publicationSchema>;
 
 export const educationalResourceSchema = resourceBaseSchema.extend({
- time_required: z.string().max(256).optional(),
- access_mode: z.array(z.string()).optional(),
- educational_level: z.array(z.string()).optional(),
- in_language: z.array(z.string()).optional(),
- pace: z.string().optional(),
- prerequisite: z.array(z.string()).optional(),
- target_audience: z.array(z.string()).optional(),
- type: z.string().optional(),
+  time_required: z.string().max(256).optional(),
+  access_mode: z.array(z.string()).optional(),
+  educational_level: z.array(z.string()).optional(),
+  in_language: z.array(z.string()).optional(),
+  pace: z.string().optional(),
+  prerequisite: z.array(z.string()).optional(),
+  target_audience: z.array(z.string()).optional(),
+  type: z.string().optional(),
 });
 
 export type EducationalResource = z.infer<typeof educationalResourceSchema>;

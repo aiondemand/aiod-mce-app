@@ -3,6 +3,9 @@
 import { TrashIcon } from "lucide-react";
 import LoadingButton from "@/components/loading-button";
 import { useTransition } from "react";
+import { deleteAsset } from "@/lib/server/assets";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface DeleteAssetBtnProps {
     assetType: string,
@@ -10,16 +13,21 @@ interface DeleteAssetBtnProps {
 }
 
 const DeleteAssetBtn: React.FC<DeleteAssetBtnProps> = (props) => {
-    console.log('DeleteAssetBtn', props);
     const [isPending, startTransition] = useTransition();
+    const router = useRouter();
 
     const handleDelete = () => {
         if (!confirm("Are you sure you want to delete this asset?")) {
             return;
         }
         startTransition(async () => {
-            alert('TODO: Delete asset');
-            // await deleteAsset(props.assetType, props.assetId);
+            const resp = await deleteAsset(props.assetType, props.assetId);
+            if (resp.error) {
+                toast.error(resp.error);
+            } else {
+                toast.success('Asset deleted successfully');
+                router.replace(`/my-assets/${props.assetType}`);
+            }
         });
     }
 
