@@ -3,6 +3,7 @@
 import { auth } from '@/auth';
 import { Resource } from './types';
 import { baseURL } from './common';
+import logger from '../logger';
 
 export const getAssets = async (assetType: string, limit: number = 1000, offset: number = 0): Promise<{
     error?: string;
@@ -91,6 +92,7 @@ export const getMyAssets = async (): Promise<{
     }
 
     try {
+        logger.info('fetching my assets');
         const response = await fetch(`${baseUrl}/user/resources/v1`, {
             method: 'GET',
             headers: {

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { AssetListLoader, AssetListLoaderSkeleton } from "./_components/asset-list-loader";
 
-
+export const dynamic = 'force-dynamic';
 interface PageProps {
     params: Promise<{ assetType: string }>
 }

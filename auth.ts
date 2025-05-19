@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import Keycloak from "next-auth/providers/keycloak"
 import { renewToken } from "./lib/server/auth"
+import logger from "./lib/logger"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     basePath: (process.env.BASEPATH || '') + "/api/auth",
@@ -32,17 +33,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         async jwt({ token, user, account }) {
             if (account) {
                 //console.log('account', account)
-                console.log('user', user)
+                logger.debug('user: ' + JSON.stringify(user, null, 2))
                 token.accessToken = account.access_token
                 token.refreshToken = account.refresh_token
                 token.expiresAt = (account.expires_in || 0) + Date.now() / 1000
 
             } else if (token.expiresAt !== undefined && Date.now() > token.expiresAt * 1000 && token.refreshToken !== undefined) {
-                console.log('refreshing token')
+                logger.info('refreshing token')
                 const resp = await renewToken(process.env.AUTH_KEYCLOAK_ID || '', process.env.AUTH_KEYCLOAK_SECRET || '', token.refreshToken)
 
                 if (resp.error) {
-                    console.error(resp.error + ' ' + resp.error_description)
+                    logger.error(resp.error + ' ' + resp.error_description)
                     return {
                         ...token,
                         error: 'RefreshAccessTokenError' as const,

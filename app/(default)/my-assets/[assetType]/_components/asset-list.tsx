@@ -17,7 +17,7 @@ interface AssetListProps {
 export const AssetList: React.FC<AssetListProps> = ({ assetType, assets }) => {
     const [search, setSearch] = useState("");
 
-    console.log('assets', assets);
+    console.debug('assets', assets);
 
     const filteredAssets = assets.filter((asset) => {
         return asset.name.toLowerCase().includes(search.toLowerCase());
