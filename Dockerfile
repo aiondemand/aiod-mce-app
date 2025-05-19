@@ -16,6 +16,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV BASEPATH /mce
+
 # Build application
 RUN npm run build
 
@@ -46,6 +48,7 @@ EXPOSE 3000
 # Set environment variables
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
+
 
 # Start the application
 CMD ["node", "server.js"]
