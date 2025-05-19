@@ -1,7 +1,7 @@
 import { handlers } from "@/auth";
 import { NextRequest } from "next/server";
 
-const basePath = process.env.BASE_PATH ?? '';
+const basePath = process.env.BASEPATH ?? '';
 
 function rewriteRequest(req: NextRequest) {
     const {
