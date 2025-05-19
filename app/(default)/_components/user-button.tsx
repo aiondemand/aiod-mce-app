@@ -1,10 +1,12 @@
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import LoginButton from "./login-button";
 import { Button } from "@/components/ui/button";
+import { logout } from "@/actions/login";
+import logger from "@/lib/logger";
 
 export default async function UserButton() {
     const session = await auth()
@@ -67,8 +69,8 @@ export default async function UserButton() {
                         <form
                             action={async () => {
                                 "use server"
-                                console.log("signing out")
-                                await signOut()
+                                logger.info("signing out")
+                                await logout()
                             }}
                         >
                             <DropdownMenuItem asChild>
