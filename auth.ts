@@ -3,7 +3,7 @@ import Keycloak from "next-auth/providers/keycloak"
 import { renewToken } from "./lib/server/auth"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-    basePath: process.env.BASEPATH,
+    basePath: (process.env.BASEPATH || '') + "/api/auth",
     pages: {
         //signIn: "/login",
     },
