@@ -82,8 +82,6 @@ const PublicationEditorForm: React.FC<AssetEditorFormProps> = (props) => {
 }
 
 const EducationalResourceEditorForm: React.FC<AssetEditorFormProps> = (props) => {
-    console.log(props.enums)
-
     const form = useForm<EducationalResource>({
         resolver: zodResolver(educationalResourceSchema),
         defaultValues: props.asset ? props.asset : {

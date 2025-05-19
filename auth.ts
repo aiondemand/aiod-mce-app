@@ -9,8 +9,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     providers: [
         Keycloak({
-            clientId: process.env.AUTH_KEYCLOAK_ID,
-            clientSecret: process.env.AUTH_KEYCLOAK_SECRET,
+            clientId: process.env.AUTH_KEYCLOAK_CLIENT_ID,
+            clientSecret: process.env.AUTH_KEYCLOAK_CLIENT_SECRET,
             issuer: process.env.AUTH_KEYCLOAK_ISSUER,
             authorization: {
                 params: {
