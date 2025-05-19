@@ -5,11 +5,14 @@ import { baseURL } from "./common";
 const fetchEnum = async (enumName: string): Promise<string[]> => {
     try {
         const response = await fetch(`${baseURL}/${enumName}/v1`);
+        if (!response.ok) {
+            throw new Error(`${response.status} ${response.statusText}`);
+        }
         const json = await response.json();
         return json;
     } catch (error: unknown) {
         const errMsg = error instanceof Error ? error.message : String(error);
-        console.error(errMsg);
+        console.error(`Error fetching enum ${enumName}: ${errMsg}`);
         return [];
     }
 }
@@ -68,10 +71,10 @@ export const fetchAllEnums = async (): Promise<Enums> => {
         languages: [] as string[],
     }
 
-    await Promise.all(Object.keys(enumNames).map(async (enumName) => {
+    for (const enumName of Object.keys(enumNames)) {
         const enumData = await fetchEnum(enumNames[enumName as keyof typeof enumNames]);
         newEnums[enumName as keyof typeof newEnums] = enumData;
-    }));
+    }
 
     return newEnums;
 }
