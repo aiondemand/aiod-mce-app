@@ -14,8 +14,11 @@ function rewriteRequest(req: NextRequest) {
     const detectedProtocol = headers.get("x-forwarded-proto") ?? protocol;
     logger.info(`detectedHost: ${detectedHost}`);
     logger.info(`detectedProtocol: ${detectedProtocol}`);
+
+    // Clean the host by removing any commas and extra spaces
+    const cleanHost = detectedHost.split(',')[0].trim();
     const _protocol = `${detectedProtocol.replace(/:$/, "")}:`;
-    const url = new URL(_protocol + "//" + detectedHost + basePath + pathname + search);
+    const url = new URL(_protocol + "//" + cleanHost + basePath + pathname + search);
 
     return new NextRequest(url, req);
 }
