@@ -71,10 +71,10 @@ export const fetchAllEnums = async (): Promise<Enums> => {
         languages: [] as string[],
     }
 
-    for (const enumName of Object.keys(enumNames)) {
+    /*  for (const enumName of Object.keys(enumNames)) {
         const enumData = await fetchEnum(enumNames[enumName as keyof typeof enumNames]);
-        newEnums[enumName as keyof typeof newEnums] = enumData;
-    }
+         newEnums[enumName as keyof typeof newEnums] = enumData;
+    }*/
 
     return newEnums;
 }

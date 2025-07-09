@@ -10,6 +10,10 @@ const ContentSchema = z.object({
   html: z.string().max(65535).optional(),
 });
 
+const RequiredContentSchema = z.object({
+  plain: z.string().min(1).max(65535),
+});
+
 const AddressSchema = z.object({
   region: z.string().max(256).optional().describe(
     "A subdivision of the country. Not necessary for most countries."
@@ -100,9 +104,9 @@ export type Location = z.infer<typeof LocationSchema>;
 export { AddressSchema, GeoSchema, LocationSchema };
 
 const resourceBaseSchema = z.object({
-  identifier: z.number().optional(),
+  identifier: z.string().optional(),
   platform: z.string().optional(),
-  platform_resource_identifier: z.number().optional(),
+  platform_resource_identifier: z.string().optional(),
   name: z.string().min(2).max(256),
   date_published: z.string().datetime().optional(),
   date_deleted: z.string().datetime().optional(),
@@ -209,4 +213,13 @@ export const educationalResourceSchema = resourceBaseSchema.extend({
 
 export type EducationalResource = z.infer<typeof educationalResourceSchema>;
 
-export type Resource = Event | Publication | EducationalResource;
+export const newsSchema = resourceBaseSchema.extend({
+  headline: z.string().min(1).max(256),
+  content: RequiredContentSchema,
+  category: z.array(z.string()).optional(),
+  tags: z.array(z.string()).optional(),
+});
+
+export type News = z.infer<typeof newsSchema>;
+
+export type Resource = Event | Publication | EducationalResource | News;

@@ -1,7 +1,6 @@
 "use client"
 
-import LoadingButton from "@/components/loading-button";
-import { EducationalResource, educationalResourceSchema, Resource } from "@/lib/server/types";
+import { EducationalResource, educationalResourceSchema, News, Resource } from "@/lib/server/types";
 import { Enums } from "@/lib/server/enums";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +9,9 @@ import FormSection from "./form-section";
 import { Input } from "@/components/ui/input";
 import MultiSelect from "./multiselect-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Taxonomy, TaxonomyType } from "@/lib/server/taxonomies";
+import { NewsEditor } from "./forms/news-editor";
+import { SubmitSection } from "./forms/submit-section";
 
 interface AssetEditorFormProps {
     isPending: boolean;
@@ -18,22 +20,16 @@ interface AssetEditorFormProps {
     asset?: Resource;
     assetType: string;
     enums: Enums;
+    taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
 export const AssetEditorForm: React.FC<AssetEditorFormProps> = (props) => {
 
     switch (props.assetType) {
-        case 'events':
-            return <EventEditorForm
+        case 'news':
+            return <NewsEditor
                 {...props}
-            />
-        case 'publications':
-            return <PublicationEditorForm
-                {...props}
-            />
-        case 'educational_resources':
-            return <EducationalResourceEditorForm
-                {...props}
+                asset={props.asset as News}
             />
         default:
             return <div className="text-center p-4 border bg-secondary border-border rounded-md">
@@ -45,40 +41,6 @@ export const AssetEditorForm: React.FC<AssetEditorFormProps> = (props) => {
                 </p>
             </div>
     }
-}
-
-const SubmitSection: React.FC<{
-    isPending: boolean;
-    buttonText: string;
-}> = (props) => {
-    return <div>
-        <LoadingButton
-            isLoading={props.isPending}
-            type="submit">
-            {props.buttonText}
-        </LoadingButton>
-    </div>
-}
-
-const EventEditorForm: React.FC<AssetEditorFormProps> = (props) => {
-
-    return <div>
-        <SubmitSection
-            isPending={props.isPending}
-            buttonText={props.buttonText}
-        />
-    </div>;
-}
-
-
-const PublicationEditorForm: React.FC<AssetEditorFormProps> = (props) => {
-    return <div>
-        <p>Publication Editor Form</p>
-        <SubmitSection
-            isPending={props.isPending}
-            buttonText={props.buttonText}
-        />
-    </div>
 }
 
 const EducationalResourceEditorForm: React.FC<AssetEditorFormProps> = (props) => {
