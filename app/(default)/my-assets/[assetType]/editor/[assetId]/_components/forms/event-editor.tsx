@@ -5,48 +5,42 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { News, newsSchema } from "@/lib/server/types";
+import { Event, eventSchema } from "@/lib/server/types";
 import FormSection from "../form-section";
 import { SubmitSection } from "./submit-section";
 
 import { Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { Textarea } from "@/components/ui/textarea";
-import KeywordEditor from "@/components/keyword-editor";
 import TaxonomySelector from "@/components/taxonomy-selector";
 import { convertTaxonomyToEntries } from "@/lib/taxonomy-utils";
+import { DatePicker } from "@/components/ui/datepicker";
 
 
-interface NewsEditorProps {
+interface EventEditorProps {
     isPending: boolean;
     buttonText: string;
-    onChange: (asset: News) => void;
-    asset?: News;
+    onChange: (asset: Event) => void;
+    asset?: Event;
     taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
-export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
-    const form = useForm<News>({
-        resolver: zodResolver(newsSchema),
+export const EventEditor: React.FC<EventEditorProps> = (props) => {
+    const form = useForm<Event>({
+        resolver: zodResolver(eventSchema),
         defaultValues: props.asset ? props.asset : {
-            name: 'todo',
-            headline: '', // title
-            content: {
+            name: '', // title
+            description: {
                 plain: '',
-            }, // body
-            category: [],
+            },
+            mode: 'offline',
+            start_date: '',
+            end_date: '',
             industrial_sector: [],
-            keyword: [],
         },
     });
 
-    // Watch the category field to conditionally show business category
-    const watchedCategories = form.watch("category");
-    const showBusinessCategory = watchedCategories?.some(category =>
-        category.toLowerCase().startsWith("business")
-    ) || false;
-
-    function onSubmit(values: News) {
-        values.name = values.headline
+    function onSubmit(values: Event) {
+        console.log(values);
         props.onChange(values);
     }
 
@@ -56,15 +50,15 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
                 <FormSection title="Required Information">
                     <FormField
                         control={form.control}
-                        name="headline"
+                        name="name"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Title</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Enter news title" {...field} />
+                                    <Input placeholder="Enter event title" {...field} />
                                 </FormControl>
                                 <FormDescription>
-                                    The headline of your news
+                                    The name of your event
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -73,18 +67,66 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
 
                     <FormField
                         control={form.control}
-                        name="content.plain"
+                        name="description.plain"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Body</FormLabel>
+                                <FormLabel>Description</FormLabel>
                                 <FormControl>
                                     <Textarea
-                                        placeholder="Enter news body"
+                                        placeholder="Enter event description"
                                         {...field}
                                     />
                                 </FormControl>
                                 <FormDescription>
-                                    A brief description or summary of the news.
+                                    A detailed description of the event.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="start_date"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Start Date</FormLabel>
+                                <FormControl>
+                                    <DatePicker
+                                        date={field.value ? new Date(field.value) : undefined}
+                                        onDateChange={(date) => {
+                                            date?.setHours(12, 0, 0, 0);
+                                            field.onChange(date ? date.toISOString() : '');
+                                        }}
+                                        placeholder="Select start date"
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    When the event starts
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="end_date"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>End Date</FormLabel>
+                                <FormControl>
+                                    <DatePicker
+                                        date={field.value ? new Date(field.value) : undefined}
+                                        onDateChange={(date) => {
+                                            date?.setHours(12, 0, 0, 0);
+                                            field.onChange(date ? date.toISOString() : '');
+                                        }}
+                                        placeholder="Select end date"
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    When the event ends
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -95,60 +137,19 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
                 <FormSection title="Additional Information">
                     <FormField
                         control={form.control}
-                        name="category"
+                        name="industrial_sector"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>News Categories</FormLabel>
+                                <FormLabel>Business Category</FormLabel>
                                 <FormControl>
                                     <TaxonomySelector
                                         values={field.value || []}
                                         onChange={field.onChange}
-                                        taxonomy={convertTaxonomyToEntries(props.taxonomies.news_categorys)}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    {showBusinessCategory && (
-                        <FormField
-                            control={form.control}
-                            name="industrial_sector"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Business Category</FormLabel>
-                                    <FormControl>
-                                        <TaxonomySelector
-                                            values={field.value || []}
-                                            onChange={field.onChange}
-                                            taxonomy={convertTaxonomyToEntries(props.taxonomies.industrial_sectors)}
-                                        />
-                                    </FormControl>
-                                    <FormDescription>
-                                        Select relevant business/industrial sectors for this news item.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    )}
-
-
-                    <FormField
-                        control={form.control}
-                        name="keyword"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Tags</FormLabel>
-                                <FormControl>
-                                    <KeywordEditor
-                                        keywords={field.value || []}
-                                        onChange={field.onChange}
+                                        taxonomy={convertTaxonomyToEntries(props.taxonomies.industrial_sectors)}
                                     />
                                 </FormControl>
                                 <FormDescription>
-                                    Add relevant keywords or tags to help categorize and search for this news item.
+                                    Select relevant business/industrial sectors for this event.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>

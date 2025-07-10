@@ -135,8 +135,8 @@ const resourceBaseSchema = z.object({
 export type ResourceBaseSchema = z.infer<typeof resourceBaseSchema>;
 
 export const eventSchema = resourceBaseSchema.extend({
-  start_date: z.string().datetime().optional(),
-  end_date: z.string().datetime().optional(),
+  start_date: z.string().optional(),
+  end_date: z.string().optional(),
   schedule: z.string().max(1800).optional(),
   registration_link: z.string().max(256).optional(),
   mode: z.string(),
