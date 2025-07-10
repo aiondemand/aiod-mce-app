@@ -1,9 +1,10 @@
 "use client"
 
-import { News, Resource, Event, EnumTypes } from "@/lib/server/types";
+import { News, Resource, Event, Project, EnumTypes } from "@/lib/server/types";
 import { Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { NewsEditor } from "./forms/news-editor";
 import { EventEditor } from "./forms/event-editor";
+import { ProjectEditor } from "./forms/project-editor";
 
 interface AssetEditorFormProps {
     isPending: boolean;
@@ -27,6 +28,11 @@ export const AssetEditorForm: React.FC<AssetEditorFormProps> = (props) => {
             return <EventEditor
                 {...props}
                 asset={props.asset as Event}
+            />
+        case 'projects':
+            return <ProjectEditor
+                {...props}
+                asset={props.asset as Project}
             />
         default:
             return <div className="text-center p-4 border bg-secondary border-border rounded-md">

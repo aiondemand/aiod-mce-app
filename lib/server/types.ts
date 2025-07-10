@@ -221,7 +221,14 @@ export const newsSchema = resourceBaseSchema.extend({
 
 export type News = z.infer<typeof newsSchema>;
 
-export type Resource = Event | Publication | EducationalResource | News;
+export const projectSchema = resourceBaseSchema.extend({
+  start_date: z.string().optional(),
+  end_date: z.string().optional(),
+});
+
+export type Project = z.infer<typeof projectSchema>;
+
+export type Resource = Event | Publication | EducationalResource | News | Project;
 
 
 
