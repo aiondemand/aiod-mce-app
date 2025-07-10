@@ -14,7 +14,8 @@ export class TaxonomyEntry {
     }
 
     toString() {
-        return [...this.path, this.term].map(t => t.toLowerCase()).join(': ');
+        return this.term;
+        //  [...this.path, this.term].map(t => t.toLowerCase()).join(': ');
     }
 }
 
