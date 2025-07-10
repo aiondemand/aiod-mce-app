@@ -1,7 +1,7 @@
 "use client"
 
 import { EducationalResource, educationalResourceSchema, News, Resource } from "@/lib/server/types";
-import { Enums } from "@/lib/server/enums";
+import { EnumTypes } from "@/lib/server/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -9,7 +9,7 @@ import FormSection from "./form-section";
 import { Input } from "@/components/ui/input";
 import MultiSelect from "./multiselect-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Taxonomy, TaxonomyType } from "@/lib/server/taxonomies";
+import { Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { NewsEditor } from "./forms/news-editor";
 import { SubmitSection } from "./forms/submit-section";
 
@@ -19,7 +19,7 @@ interface AssetEditorFormProps {
     onChange: (asset: Resource) => void;
     asset?: Resource;
     assetType: string;
-    enums: Enums;
+    enums: Record<EnumTypes, string[]>;
     taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
@@ -160,7 +160,7 @@ const EducationalResourceEditorForm: React.FC<AssetEditorFormProps> = (props) =>
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    {props.enums.eduType.map((eduType) => (
+                                    {props.enums[EnumTypes.EDU_TYPE].map((eduType) => (
                                         <SelectItem key={eduType} value={eduType}>{eduType}</SelectItem>
                                     ))}
                                 </SelectContent>

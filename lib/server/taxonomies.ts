@@ -1,24 +1,16 @@
+'use server'
+
 import { baseURL } from "./common";
+import { Taxonomy, TaxonomyType } from "./types";
 
-
-export enum TaxonomyType {
-    INDUSTRIAL_SECTORS = "industrial_sectors",
-    SCIENTIFIC_DOMAINS = "scientific_domains",
-    RESEARCH_AREAS = "research_areas",
-    PUBLICATION_TYPES = "publication_types",
-    NEWS_CATEGORIES = "news_categorys", // is typo in the API...
-    LICENSES = "licenses",
-}
-
-export interface Taxonomy {
-    term: string;
-    definition: string;
-    subterms: Taxonomy[];
-}
 
 export const fetchTaxonomy = async (taxonomyType: TaxonomyType): Promise<Taxonomy[]> => {
     try {
-        const response = await fetch(`${baseURL}/v2/${taxonomyType}`);
+        const response = await fetch(`${baseURL}/v2/${taxonomyType}`, {
+            next: {
+                revalidate: 60 * 60 * 24 // 24 hours
+            }
+        });
         if (!response.ok) {
             throw new Error(`${response.status} ${response.statusText}`);
         }

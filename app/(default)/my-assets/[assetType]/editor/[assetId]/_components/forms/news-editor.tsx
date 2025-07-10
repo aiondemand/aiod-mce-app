@@ -9,7 +9,7 @@ import { News, newsSchema } from "@/lib/server/types";
 import FormSection from "../form-section";
 import { SubmitSection } from "./submit-section";
 
-import { Taxonomy, TaxonomyType } from "@/lib/server/taxonomies";
+import { Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { Textarea } from "@/components/ui/textarea";
 
 interface NewsEditorProps {

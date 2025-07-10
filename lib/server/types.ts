@@ -223,3 +223,42 @@ export const newsSchema = resourceBaseSchema.extend({
 export type News = z.infer<typeof newsSchema>;
 
 export type Resource = Event | Publication | EducationalResource | News;
+
+
+
+export enum TaxonomyType {
+  INDUSTRIAL_SECTORS = "industrial_sectors",
+  SCIENTIFIC_DOMAINS = "scientific_domains",
+  RESEARCH_AREAS = "research_areas",
+  PUBLICATION_TYPES = "publication_types",
+  NEWS_CATEGORIES = "news_categorys", // is typo in the API...
+  LICENSES = "licenses",
+}
+
+export interface Taxonomy {
+  term: string;
+  definition: string;
+  subterms: Taxonomy[];
+}
+
+
+export enum EnumTypes {
+  APPLICATION_AREAS = 'application_areas',
+  BADGES = 'badges',
+  COMPUTATIONAL_ASSET_TYPES = 'computational_asset_types',
+  EDU_ACCESS_MODES = 'edu_access_modes',
+  EDU_EDUCATIONAL_LEVELS = 'edu_educational_levels',
+  EDU_PACES = 'edu_paces',
+  EDU_PREREQUISITES = 'edu_prerequisites',
+  EDU_TARGET_AUDIENCES = 'edu_target_audiences',
+  EDU_TYPE = 'educational_resource_types',
+  EVENT_MODES = 'event_modes',
+  EVENT_STATUS = 'event_status',
+  EXPERTISES = 'expertises',
+  EXTERNAL_RESOURCES = 'external_resources',
+  // KEYWORDS = 'keywords', // is too big to fetch
+  LANGUAGES = 'languages',
+  ML_MODEL_TYPES = 'ml_model_types',
+  ORGANISATION_TYPES = 'organisation_types',
+  RELEVANT_LINKS = 'relevant_links',
+}

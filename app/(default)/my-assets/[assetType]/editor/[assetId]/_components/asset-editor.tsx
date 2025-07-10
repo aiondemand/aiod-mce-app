@@ -4,16 +4,17 @@ import { createAsset, updateAsset } from "@/lib/server/assets";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Resource } from "@/lib/server/types";
+import { Resource, Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { AssetEditorForm } from "./asset-editor-form";
-import { Enums } from "@/lib/server/enums";
-import { Taxonomy, TaxonomyType } from "@/lib/server/taxonomies";
+import { EnumTypes } from "@/lib/server/types";
+
+
 interface AssetEditorProps {
     assetType: string,
     assetId: string
     isNewAsset: boolean
     asset?: Resource
-    enums: Enums
+    enums: Record<EnumTypes, string[]>
     taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
@@ -21,6 +22,7 @@ const AssetEditor: React.FC<AssetEditorProps> = (props) => {
     const router = useRouter();
     const [isMounted, setIsMounted] = useState(false);
     const [isPending, startTransition] = useTransition();
+
 
     useEffect(() => {
         setIsMounted(true);
