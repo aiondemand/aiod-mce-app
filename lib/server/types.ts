@@ -228,7 +228,13 @@ export const projectSchema = resourceBaseSchema.extend({
 
 export type Project = z.infer<typeof projectSchema>;
 
-export type Resource = Event | Publication | EducationalResource | News | Project;
+export const organisationSchema = resourceBaseSchema.extend({
+
+});
+
+export type Organisation = z.infer<typeof organisationSchema>;
+
+export type Resource = Event | Publication | EducationalResource | News | Project | Organisation;
 
 
 
