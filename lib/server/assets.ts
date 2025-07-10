@@ -4,6 +4,7 @@ import { auth } from '@/auth';
 import { Resource } from './types';
 import { baseURL } from './common';
 import logger from '../logger';
+import { revalidatePath } from 'next/cache';
 
 export const getAssets = async (assetType: string, limit: number = 1000, offset: number = 0): Promise<{
     error?: string;
@@ -20,7 +21,7 @@ export const getAssets = async (assetType: string, limit: number = 1000, offset:
     }
 
     try {
-        const response = await fetch(`${baseUrl}/${assetType}/v1/?limit=${limit}&offset=${offset}`, {
+        const response = await fetch(`${baseUrl}/v2/${assetType}?limit=${limit}&offset=${offset}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ export const getAsset = async (assetType: string, assetId: string): Promise<{
     }
 
     try {
-        const response = await fetch(`${baseURL}/${assetType}/v1/${assetId}`, {
+        const response = await fetch(`${baseURL}/v2/${assetType}/${assetId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ export const getMyAssets = async (): Promise<{
 
     try {
         logger.info('fetching my assets');
-        const response = await fetch(`${baseUrl}/user/resources/v1`, {
+        const response = await fetch(`${baseUrl}/v2/user/resources`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -127,7 +128,7 @@ export const createAsset = async (assetType: string, asset: Resource) => {
     }
 
     try {
-        const response = await fetch(`${baseUrl}/${assetType}/v1`, {
+        const response = await fetch(`${baseUrl}/v2/${assetType}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -157,8 +158,10 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
         return { error: 'Unauthorized' };
     }
 
+    delete asset.aiod_entry
+
     try {
-        const response = await fetch(`${baseURL}/${assetType}/v1/${assetId}`, {
+        const response = await fetch(`${baseURL}/v2/${assetType}/${assetId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -171,6 +174,7 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
             return { error: `Failed to update ${assetType}: ${response.statusText}` };
         }
 
+        revalidatePath(`/my-assets/${assetType}/editor/${assetId}`);
         const data = await response.json();
         return {
             asset: data
@@ -192,7 +196,7 @@ export const deleteAsset = async (assetType: string, assetId: string): Promise<{
     }
 
     try {
-        const response = await fetch(`${baseURL}/${assetType}/v1/${assetId}`, {
+        const response = await fetch(`${baseURL}/v2/${assetType}/${assetId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

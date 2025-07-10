@@ -10,6 +10,10 @@ const ContentSchema = z.object({
   html: z.string().max(65535).optional(),
 });
 
+const RequiredContentSchema = z.object({
+  plain: z.string().min(1).max(65535),
+});
+
 const AddressSchema = z.object({
   region: z.string().max(256).optional().describe(
     "A subdivision of the country. Not necessary for most countries."
@@ -100,9 +104,9 @@ export type Location = z.infer<typeof LocationSchema>;
 export { AddressSchema, GeoSchema, LocationSchema };
 
 const resourceBaseSchema = z.object({
-  identifier: z.number().optional(),
+  identifier: z.string().optional(),
   platform: z.string().optional(),
-  platform_resource_identifier: z.number().optional(),
+  platform_resource_identifier: z.string().optional(),
   name: z.string().min(2).max(256),
   date_published: z.string().datetime().optional(),
   date_deleted: z.string().datetime().optional(),
@@ -131,8 +135,8 @@ const resourceBaseSchema = z.object({
 export type ResourceBaseSchema = z.infer<typeof resourceBaseSchema>;
 
 export const eventSchema = resourceBaseSchema.extend({
-  start_date: z.string().datetime().optional(),
-  end_date: z.string().datetime().optional(),
+  start_date: z.string().optional(),
+  end_date: z.string().optional(),
   schedule: z.string().max(1800).optional(),
   registration_link: z.string().max(256).optional(),
   mode: z.string(),
@@ -209,4 +213,64 @@ export const educationalResourceSchema = resourceBaseSchema.extend({
 
 export type EducationalResource = z.infer<typeof educationalResourceSchema>;
 
-export type Resource = Event | Publication | EducationalResource;
+export const newsSchema = resourceBaseSchema.extend({
+  headline: z.string().min(1).max(256),
+  content: RequiredContentSchema,
+  category: z.array(z.string()).optional(),
+});
+
+export type News = z.infer<typeof newsSchema>;
+
+export const projectSchema = resourceBaseSchema.extend({
+  start_date: z.string().optional(),
+  end_date: z.string().optional(),
+});
+
+export type Project = z.infer<typeof projectSchema>;
+
+export const organisationSchema = resourceBaseSchema.extend({
+
+});
+
+export type Organisation = z.infer<typeof organisationSchema>;
+
+export type Resource = Event | Publication | EducationalResource | News | Project | Organisation;
+
+
+
+export enum TaxonomyType {
+  INDUSTRIAL_SECTORS = "industrial_sectors",
+  SCIENTIFIC_DOMAINS = "scientific_domains",
+  RESEARCH_AREAS = "research_areas",
+  PUBLICATION_TYPES = "publication_types",
+  NEWS_CATEGORIES = "news_categorys", // is typo in the API...
+  LICENSES = "licenses",
+}
+
+export interface Taxonomy {
+  term: string;
+  definition: string;
+  subterms: Taxonomy[];
+}
+
+
+export enum EnumTypes {
+  APPLICATION_AREAS = 'application_areas',
+  BADGES = 'badges',
+  COMPUTATIONAL_ASSET_TYPES = 'computational_asset_types',
+  EDU_ACCESS_MODES = 'edu_access_modes',
+  EDU_EDUCATIONAL_LEVELS = 'edu_educational_levels',
+  EDU_PACES = 'edu_paces',
+  EDU_PREREQUISITES = 'edu_prerequisites',
+  EDU_TARGET_AUDIENCES = 'edu_target_audiences',
+  EDU_TYPE = 'educational_resource_types',
+  EVENT_MODES = 'event_modes',
+  EVENT_STATUS = 'event_status',
+  EXPERTISES = 'expertises',
+  EXTERNAL_RESOURCES = 'external_resources',
+  // KEYWORDS = 'keywords', // is too big to fetch
+  LANGUAGES = 'languages',
+  ML_MODEL_TYPES = 'ml_model_types',
+  ORGANISATION_TYPES = 'organisation_types',
+  RELEVANT_LINKS = 'relevant_links',
+}
