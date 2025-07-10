@@ -217,7 +217,6 @@ export const newsSchema = resourceBaseSchema.extend({
   headline: z.string().min(1).max(256),
   content: RequiredContentSchema,
   category: z.array(z.string()).optional(),
-  tags: z.array(z.string()).optional(),
 });
 
 export type News = z.infer<typeof newsSchema>;

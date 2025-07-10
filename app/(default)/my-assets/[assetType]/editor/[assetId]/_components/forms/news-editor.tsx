@@ -11,6 +11,7 @@ import { SubmitSection } from "./submit-section";
 
 import { Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { Textarea } from "@/components/ui/textarea";
+import KeywordEditor from "@/components/keyword-editor";
 
 interface NewsEditorProps {
     isPending: boolean;
@@ -31,7 +32,7 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
             }, // body
             category: [],
             industrial_sector: [],
-            tags: [], // keywords
+            keyword: [],
         },
     });
 
@@ -78,6 +79,28 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
                                 </FormControl>
                                 <FormDescription>
                                     A brief description or summary of the news.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </FormSection>
+
+                <FormSection title="Additional Information">
+                    <FormField
+                        control={form.control}
+                        name="keyword"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Tags</FormLabel>
+                                <FormControl>
+                                    <KeywordEditor
+                                        keywords={field.value || []}
+                                        onChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    Add relevant keywords or tags to help categorize and search for this news item.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
