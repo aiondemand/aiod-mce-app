@@ -12,6 +12,9 @@ import { SubmitSection } from "./submit-section";
 import { Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { Textarea } from "@/components/ui/textarea";
 import KeywordEditor from "@/components/keyword-editor";
+import TaxonomySelector from "@/components/taxonomy-selector";
+import { convertTaxonomyToEntries } from "@/lib/taxonomy-utils";
+
 
 interface NewsEditorProps {
     isPending: boolean;
@@ -36,11 +39,15 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
         },
     });
 
-    // console.log(props.taxonomies);
-
+    // Watch the category field to conditionally show business category
+    const watchedCategories = form.watch("category");
+    const showBusinessCategory = watchedCategories?.some(category =>
+        category.toLowerCase().startsWith("business")
+    ) || false;
 
     function onSubmit(values: News) {
         values.name = values.headline
+        console.log(values);
         props.onChange(values);
     }
 
@@ -87,6 +94,48 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
                 </FormSection>
 
                 <FormSection title="Additional Information">
+                    <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>News Categories</FormLabel>
+                                <FormControl>
+                                    <TaxonomySelector
+                                        values={field.value || []}
+                                        onChange={field.onChange}
+                                        taxonomy={convertTaxonomyToEntries(props.taxonomies.news_categorys)}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    {showBusinessCategory && (
+                        <FormField
+                            control={form.control}
+                            name="industrial_sector"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Business Category</FormLabel>
+                                    <FormControl>
+                                        <TaxonomySelector
+                                            values={field.value || []}
+                                            onChange={field.onChange}
+                                            taxonomy={convertTaxonomyToEntries(props.taxonomies.industrial_sectors)}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Select relevant business/industrial sectors for this news item.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    )}
+
+
                     <FormField
                         control={form.control}
                         name="keyword"
