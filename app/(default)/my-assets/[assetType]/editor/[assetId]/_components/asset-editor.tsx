@@ -37,7 +37,7 @@ const AssetEditor: React.FC<AssetEditorProps> = (props) => {
             const resp = await createAsset(props.assetType, asset);
             if (resp?.error) {
                 toast.error(resp.error);
-            } else {
+            } else if (resp.asset) {
                 toast.success('Asset created successfully');
                 router.replace(`/my-assets/${props.assetType}/editor/${resp.asset.identifier}`);
             }

@@ -1,11 +1,15 @@
 'use server'
 
 import { auth } from "@/auth";
-import { baseURL } from "./common";
+import { AiodAPI } from "./common";
 
 
 export const renewToken = async (clientId: string, clientSecret: string, refreshToken: string) => {
-    const resp = await fetch(`${baseURL}/aiod-auth/realms/aiod/protocol/openid-connect/token`, {
+    const resp = await AiodAPI.fetch<{
+        access_token: string;
+        refresh_token: string;
+        expires_in: number;
+    }>(`/aiod-auth/realms/aiod/protocol/openid-connect/token`, undefined, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -18,7 +22,7 @@ export const renewToken = async (clientId: string, clientSecret: string, refresh
             scope: 'openid profile email offline_access'
         })
     })
-    return resp.json()
+    return resp;
 }
 
 export const testAuth = async (): Promise<{
@@ -33,12 +37,15 @@ export const testAuth = async (): Promise<{
         }
     }
 
-    const resp = await fetch(`${baseURL}/authorization_test`, {
+    const resp = await AiodAPI.fetch<{
+        name?: string;
+        error?: string;
+    }>(`/authorization_test`, token, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         },
     });
-    return resp.json();
+    return resp;
 }

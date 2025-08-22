@@ -2,7 +2,7 @@
 
 import { auth } from '@/auth';
 import { Resource } from './types';
-import { baseURL } from './common';
+import { AiodAPI } from './common';
 import logger from '../logger';
 import { revalidatePath } from 'next/cache';
 
@@ -54,21 +54,10 @@ export const getAsset = async (assetType: string, assetId: string): Promise<{
     }
 
     try {
-        const response = await fetch(`${baseURL}/v2/${assetType}/${assetId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.accessToken}`,
-            },
-        });
+        const response = await AiodAPI.fetch<Resource>(`/v2/${assetType}/${assetId}`, session.accessToken);
 
-        if (!response.ok) {
-            return { error: `Failed to fetch ${assetType}: ${response.statusText}` };
-        }
-
-        const data = await response.json();
         return {
-            asset: data
+            asset: response
         };
     } catch (error) {
         console.error(`Error fetching ${assetType}:`, error);
@@ -87,28 +76,14 @@ export const getMyAssets = async (): Promise<{
         return { error: 'Unauthorized' };
     }
 
-    const baseUrl = process.env.BACKEND_URL;
-    if (!baseUrl) {
-        return { error: 'Backend URL not configured' };
-    }
-
     try {
         logger.info('fetching my assets');
-        const response = await fetch(`${baseUrl}/v2/user/resources`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.accessToken}`,
-            },
-        });
+        const response = await AiodAPI.fetch<{
+            [key: string]: Resource[];
+        }>(`/v2/user/resources`, session.accessToken);
 
-        if (!response.ok) {
-            return { error: `Failed to fetch my assets: ${response.statusText}` };
-        }
-
-        const data = await response.json();
         return {
-            assets: data
+            assets: response
         };
     } catch (error) {
         console.error('Error fetching my assets:', error);
@@ -122,28 +97,13 @@ export const createAsset = async (assetType: string, asset: Resource) => {
         return { error: 'Unauthorized' };
     }
 
-    const baseUrl = process.env.BACKEND_URL;
-    if (!baseUrl) {
-        return { error: 'Backend URL not configured' };
-    }
-
     try {
-        const response = await fetch(`${baseUrl}/v2/${assetType}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.accessToken}`,
-            },
-            body: JSON.stringify(asset),
+        const response = await AiodAPI.fetch<Resource>(`/v2/${assetType}`, session.accessToken, {
+            method: 'POST', body: JSON.stringify(asset),
         });
 
-        if (!response.ok) {
-            return { error: `Failed to create ${assetType}: ${response.statusText}` };
-        }
-
-        const data = await response.json();
         return {
-            asset: data
+            asset: response
         };
 
     } catch (error) {
@@ -161,23 +121,13 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
     delete asset.aiod_entry
 
     try {
-        const response = await fetch(`${baseURL}/v2/${assetType}/${assetId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.accessToken}`,
-            },
-            body: JSON.stringify(asset),
+        const response = await AiodAPI.fetch<Resource>(`/v2/${assetType}/${assetId}`, session.accessToken, {
+            method: 'PUT', body: JSON.stringify(asset),
         });
 
-        if (!response.ok) {
-            return { error: `Failed to update ${assetType}: ${response.statusText}` };
-        }
-
         revalidatePath(`/my-assets/${assetType}/editor/${assetId}`);
-        const data = await response.json();
         return {
-            asset: data
+            asset: response
         };
 
     } catch (error) {
@@ -187,29 +137,23 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
 }
 
 
-export const deleteAsset = async (assetType: string, assetId: string): Promise<{
-    error?: string;
-}> => {
+export const deleteAsset = async (assetType: string, assetId: string) => {
     const session = await auth();
     if (!session) {
         return { error: 'Unauthorized' };
     }
 
     try {
-        const response = await fetch(`${baseURL}/v2/${assetType}/${assetId}`, {
+        const response = await AiodAPI.fetch<Resource>(`/v2/${assetType}/${assetId}`, session.accessToken, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.accessToken}`,
-            },
         });
 
-        if (!response.ok) {
-            return { error: `Failed to delete ${assetType}: ${response.statusText}` };
-        }
+        return {
+            asset: response
+        };
+
     } catch (error) {
         console.error(`Error deleting ${assetType}:`, error);
         return { error: 'Failed to delete asset' };
     }
-    return { error: undefined };
 }

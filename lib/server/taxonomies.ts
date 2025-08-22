@@ -1,25 +1,13 @@
 'use server'
 
-import { baseURL } from "./common";
+import { AiodAPI } from "./common";
 import { Taxonomy, TaxonomyType } from "./types";
 
 
 export const fetchTaxonomy = async (taxonomyType: TaxonomyType): Promise<Taxonomy[]> => {
-    try {
-        const response = await fetch(`${baseURL}/v2/${taxonomyType}`, {
-            next: {
-                revalidate: 60 * 60 * 24 // 24 hours
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`${response.status} ${response.statusText}`);
-        }
-        const json = await response.json();
-        return json;
-    } catch (error: unknown) {
-        const errMsg = error instanceof Error ? error.message : String(error);
-        throw new Error(`Error fetching taxonomy ${taxonomyType}: ${errMsg}`);
-    }
+    return AiodAPI.fetch<Taxonomy[]>(`/v2/${taxonomyType}`, undefined, {
+        revalidate: 60 * 60 * 24 // 24 hours
+    });
 }
 
 export const fetchAllTaxonomies = async (): Promise<Record<TaxonomyType, Taxonomy[]>> => {
