@@ -20,7 +20,10 @@ class AiodAPIClient {
 
     async fetch<T>(pathname: string, accessToken?: string, requestOptions?: ApiOptions): Promise<T> {
         const { headers, method = 'GET', body, revalidate = 0 } = requestOptions || {};
-        const url = new URL(pathname, this.baseURL);
+        const base = this.baseURL.endsWith('/') ? this.baseURL : `${this.baseURL}/`;
+        const relativePath = pathname.startsWith('/') ? pathname.slice(1) : pathname;
+        const url = new URL(relativePath, base);
+        logger.debug(`API Request: ${url.toString()} ${method}`);
         const response = await fetch(url, {
             method,
             headers: {
@@ -36,8 +39,10 @@ class AiodAPIClient {
         if (!response.ok) {
             const msg = `API Error: ${response.status} ${response.statusText}`;
             logger.error(msg);
+            logger.error(await response.text());
             throw new Error(msg);
         }
+        logger.debug(`API Response: ${response.status} ${response.statusText}`);
 
         return response.json();
     }

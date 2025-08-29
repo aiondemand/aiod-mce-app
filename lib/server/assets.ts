@@ -21,7 +21,7 @@ export const getAssets = async (assetType: string, limit: number = 1000, offset:
     }
 
     try {
-        const response = await fetch(`${baseUrl}/v2/${assetType}?limit=${limit}&offset=${offset}`, {
+        const response = await fetch(`${baseUrl}/${assetType}?limit=${limit}&offset=${offset}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export const getAsset = async (assetType: string, assetId: string): Promise<{
     }
 
     try {
-        const response = await AiodAPI.fetch<Resource>(`/v2/${assetType}/${assetId}`, session.accessToken);
+        const response = await AiodAPI.fetch<Resource>(`/${assetType}/${assetId}`, session.accessToken);
 
         return {
             asset: response
@@ -80,7 +80,7 @@ export const getMyAssets = async (): Promise<{
         logger.info('fetching my assets');
         const response = await AiodAPI.fetch<{
             [key: string]: Resource[];
-        }>(`/v2/user/resources`, session.accessToken);
+        }>(`/user/resources`, session.accessToken);
 
         return {
             assets: response
@@ -98,8 +98,12 @@ export const createAsset = async (assetType: string, asset: Resource) => {
     }
 
     try {
-        const response = await AiodAPI.fetch<Resource>(`/v2/${assetType}`, session.accessToken, {
-            method: 'POST', body: JSON.stringify(asset),
+        const response = await AiodAPI.fetch<Resource>(`/${assetType}`, session.accessToken, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(asset),
         });
 
         return {
@@ -121,7 +125,7 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
     delete asset.aiod_entry
 
     try {
-        const response = await AiodAPI.fetch<Resource>(`/v2/${assetType}/${assetId}`, session.accessToken, {
+        const response = await AiodAPI.fetch<Resource>(`/${assetType}/${assetId}`, session.accessToken, {
             method: 'PUT', body: JSON.stringify(asset),
         });
 
@@ -144,7 +148,7 @@ export const deleteAsset = async (assetType: string, assetId: string) => {
     }
 
     try {
-        const response = await AiodAPI.fetch<Resource>(`/v2/${assetType}/${assetId}`, session.accessToken, {
+        const response = await AiodAPI.fetch<Resource>(`/${assetType}/${assetId}`, session.accessToken, {
             method: 'DELETE',
         });
 
