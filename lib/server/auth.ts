@@ -1,28 +1,51 @@
 'use server'
 
 import { auth } from "@/auth";
+import logger from "../logger";
 import { AiodAPI } from "./common";
 
 
 export const renewToken = async (clientId: string, clientSecret: string, refreshToken: string) => {
-    const resp = await AiodAPI.fetch<{
-        access_token: string;
-        refresh_token: string;
-        expires_in: number;
-    }>(`/aiod-auth/realms/aiod/protocol/openid-connect/token`, undefined, {
+    const issuer = process.env.AUTH_KEYCLOAK_ISSUER || '';
+    if (!issuer) {
+        throw new Error('AUTH_KEYCLOAK_ISSUER is not set');
+    }
+
+    const tokenEndpoint = `${issuer.replace(/\/$/, '')}/protocol/openid-connect/token`;
+
+    const form = new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+        client_id: clientId,
+        scope: 'openid profile email offline_access'
+    });
+    if (clientSecret) {
+        form.append('client_secret', clientSecret);
+    }
+
+    const response = await fetch(tokenEndpoint, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
-            client_id: clientId,
-            client_secret: clientSecret,
-            scope: 'openid profile email offline_access'
-        })
-    })
-    return resp;
+        body: form,
+        cache: 'no-store',
+    });
+
+    if (!response.ok) {
+        const errorBody = await response.text().catch(() => '');
+        const message = `Token refresh failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody}` : ''}`;
+        logger.error(message);
+        throw new Error(message);
+    }
+
+    const json = await response.json() as {
+        access_token: string;
+        refresh_token: string;
+        expires_in: number;
+    };
+
+    return json;
 }
 
 export const testAuth = async (): Promise<{
