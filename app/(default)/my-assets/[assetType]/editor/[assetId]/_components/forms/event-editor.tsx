@@ -33,8 +33,8 @@ export const EventEditor: React.FC<EventEditorProps> = (props) => {
                 plain: '',
             },
             mode: 'offline',
-            start_date: '',
-            end_date: '',
+            start_date: undefined,
+            end_date: undefined,
             industrial_sector: [],
         },
     });
