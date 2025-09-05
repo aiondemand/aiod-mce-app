@@ -40,13 +40,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Create a .env file
 
 ```
+APP_DEPLOYMENT_URL=https://your-deployment-url.com
 AUTH_SECRET=your-secure-random-secret
 NEXTAUTH_URL=https://your-deployment-url.com
 AUTH_KEYCLOAK_CLIENT_ID=your-client-id
 AUTH_KEYCLOAK_CLIENT_SECRET=your-client-secret
 AUTH_KEYCLOAK_ISSUER=https://your-keycloak-domain/realms/your-realm
 BACKEND_URL=https://your-backend-url
-BASEPATH=/mce
+NEXT_PUBLIC_BASEPATH=/mce
 ```
 
 > Docker’s --env-file **does not support** comments or quotes.

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Montserrat, Jura } from "next/font/google";
 import "./globals.css";
+import { TRPCReactProvider } from "@/trpc/client";
+import { Toaster } from "@/components/ui/sonner";
+
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -35,7 +38,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${jura.variable} ${geistMono.variable} antialiased font-sans dark bg-background`}
       >
-        {children}
+        <TRPCReactProvider>
+          {children}
+          <Toaster />
+        </TRPCReactProvider>
       </body>
     </html>
   );

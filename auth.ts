@@ -1,4 +1,5 @@
 import NextAuth from "next-auth"
+import 'next-auth/jwt';
 import Keycloak from "next-auth/providers/keycloak"
 import { renewToken } from "./lib/server/auth"
 import logger from "./lib/logger"
@@ -81,7 +82,7 @@ declare module "next-auth" {
 
 }
 
-declare module "@auth/core/jwt" {
+declare module 'next-auth/jwt' {
     /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
     interface JWT {
         provider?: string
