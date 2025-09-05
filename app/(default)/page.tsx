@@ -1,8 +1,15 @@
 import { LoginButton } from "@/components/login-button";
 import TestTRPC from "./_components/test-trpc";
 import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 
 export default async function Home() {
+  const session = await auth()
+  //console.log(session)
+
+  if (!session?.user) {
+    redirect("/login")
+  }
 
   // redirect("/my-assets/datasets")
   return <TestTRPC />
