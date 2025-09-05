@@ -1,6 +1,6 @@
 export const supportedAssetTypes = [
     "news",
-    "events",
+    "event",
     "organisations",
     "projects",
 ]
@@ -38,4 +38,10 @@ export const assetTypeToLabel = (assetType: string) => {
         default:
             return assetType;
     }
+}
+
+export const removePlural = (assetType: string) => {
+    const lower = assetType.toLowerCase();
+    if (lower === "news") return "news";
+    return lower.endsWith("s") ? lower.slice(0, -1) : lower;
 }
