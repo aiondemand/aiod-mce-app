@@ -22,7 +22,7 @@ export const AssetCard: React.FC<AssetCardProps> = ({ asset, assetType }) => {
         )}>
             {asset.aiod_entry?.status}
         </div>
-        <div className="hidden group-hover:flex absolute -left-6 top-0 items-center h-full">
+        <div className="hidden group-hover:flex absolute -right-6 top-0 items-center h-full">
             <PencilIcon className="size-4 text-muted-foreground" />
         </div>
     </Link>

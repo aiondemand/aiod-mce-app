@@ -33,6 +33,15 @@ const MyAssets = () => {
         />
     </div>
 
+    const hasSearchResults = () => {
+        for (const key in data?.assets) {
+            if (data?.assets[key].filter((asset) => asset.name.toLowerCase().includes(search.toLowerCase())).length > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     return (
         <div className="space-y-4 p-6">
             <h1 className="text-2xl font-bold font-jura mt-4">
@@ -52,16 +61,34 @@ const MyAssets = () => {
 
 
             </div>
-            {supportedAssetTypes.map((assetType) => (
-                <AssetTypeSection
-                    key={assetType}
-                    assets={
-                        search ? data?.assets?.[removePlural(assetType)]?.filter((asset) => asset.name.toLowerCase().includes(search.toLowerCase())) || [] :
-                            data?.assets?.[removePlural(assetType)] || []}
 
-                    assetType={assetType}
-                />
-            ))}
+            {search.length > 0 && (
+                <>
+                    <p className="text-sm text-muted-foreground">
+                        Search results for: {search}
+                    </p>
+                    {!hasSearchResults() && (
+                        <p className="text-lg text-center text-muted-foreground my-4 ">
+                            No search results found.
+                        </p>
+                    )}
+                </>
+            )}
+
+
+            <div className="space-y-8">
+                {supportedAssetTypes.map((assetType) => (
+                    <AssetTypeSection
+                        key={assetType}
+                        assets={
+                            search ? data?.assets?.[removePlural(assetType)]?.filter((asset) => asset.name.toLowerCase().includes(search.toLowerCase())) || [] :
+                                data?.assets?.[removePlural(assetType)] || []}
+
+                        assetType={assetType}
+                        hideIfEmpty={search.length > 0}
+                    />
+                ))}
+            </div>
         </div>
     )
 }

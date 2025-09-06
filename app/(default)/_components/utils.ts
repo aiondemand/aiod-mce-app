@@ -6,7 +6,8 @@ export const supportedAssetTypes = [
 ]
 
 export const assetTypeToLabel = (assetType: string) => {
-    switch (assetType) {
+    const sanitized = ensurePlural(assetType).toLowerCase();
+    switch (sanitized) {
         case "datasets":
             return "Datasets";
         case "ml_models":
@@ -44,4 +45,10 @@ export const removePlural = (assetType: string) => {
     const lower = assetType.toLowerCase();
     if (lower === "news") return "news";
     return lower.endsWith("s") ? lower.slice(0, -1) : lower;
+}
+
+export const ensurePlural = (assetType: string) => {
+    const lower = assetType.toLowerCase();
+    if (lower === "news") return "news";
+    return lower.endsWith("s") ? lower : lower + "s";
 }
