@@ -1,7 +1,6 @@
 "use client"
 
 import { News, Resource, Event, Project, Organisation } from "@/lib/server/types";
-import { Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { NewsEditor } from "./forms/news-editor";
 import { EventEditor } from "./forms/event-editor";
 import { ProjectEditor } from "./forms/project-editor";
@@ -14,7 +13,6 @@ interface AssetEditorFormProps {
     onChange: (asset: Resource) => void;
     asset?: Resource;
     assetType: string;
-    taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
 export const AssetEditorForm: React.FC<AssetEditorFormProps> = (props) => {

@@ -5,7 +5,6 @@ import AssetEditor from "./_components/asset-editor";
 import DeleteAssetBtn from "./_components/delete-asset-btn";
 import { getAsset } from "@/lib/server/assets";
 import { ErrorAlert } from "@/components/error-alert";
-import { fetchAllTaxonomies } from "@/lib/server/taxonomies";
 import { assetTypeToLabel } from "@/app/(default)/_components/utils";
 
 interface PageProps {
@@ -15,7 +14,6 @@ interface PageProps {
 export default async function Page({ params }: PageProps) {
     const { assetType, assetId } = await params;
 
-    const taxonomies = await fetchAllTaxonomies();
     const isNew = assetId === "new";
 
     let content: React.ReactNode;
@@ -34,7 +32,7 @@ export default async function Page({ params }: PageProps) {
                 assetId={assetId}
                 isNewAsset={isNew}
                 asset={assetResp.asset}
-                taxonomies={taxonomies}
+
             />
         }
     } else {
@@ -42,7 +40,6 @@ export default async function Page({ params }: PageProps) {
             assetType={assetType}
             assetId={assetId}
             isNewAsset={isNew}
-            taxonomies={taxonomies}
         />
     }
 
