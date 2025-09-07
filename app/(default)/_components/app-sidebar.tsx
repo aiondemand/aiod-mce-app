@@ -4,7 +4,7 @@ import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Link from "next/link";
 import { LogOutIcon } from "lucide-react";
-import UserButton from "./user-button";
+import UserButton from "./sidebar-user-button";
 import { NavLinks } from "./nav-links";
 import { assetTypeToLabel } from "./utils";
 
