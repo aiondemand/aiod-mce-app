@@ -1,6 +1,3 @@
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import AppSidebar from "./_components/app-sidebar";
-import { Toaster } from "@/components/ui/sonner";
 import AppBar from "./_components/app-bar";
 
 export default function DefaultLayout({
