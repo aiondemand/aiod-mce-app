@@ -23,7 +23,7 @@ const AssetTypeSection = ({ assetType, assets, hideIfEmpty = false }: AssetTypeS
         <div>
             <Collapsible defaultOpen>
                 <CollapsibleTrigger asChild>
-                    <button className="bg-secondary text-jura font-bold group flex w-full items-center justify-between gap-2 rounded-md px-4 py-1 text-left outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px]">
+                    <button className="bg-secondary text-jura font-bold group flex w-full items-center justify-between gap-2 rounded-full px-4 py-1 text-left outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px]">
                         <h2 className="text-lg font-semibold">
                             {assetTypeToLabel(assetType)}
                         </h2>
