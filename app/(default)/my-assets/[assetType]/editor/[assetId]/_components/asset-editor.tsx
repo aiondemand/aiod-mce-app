@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Resource, Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { AssetEditorForm } from "./asset-editor-form";
-import { EnumTypes } from "@/lib/server/types";
 
 
 interface AssetEditorProps {
@@ -14,7 +13,6 @@ interface AssetEditorProps {
     assetId: string
     isNewAsset: boolean
     asset?: Resource
-    enums: Record<EnumTypes, string[]>
     taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
@@ -64,7 +62,6 @@ const AssetEditor: React.FC<AssetEditorProps> = (props) => {
             buttonText={props.isNewAsset ? 'Create' : 'Update'}
             onChange={props.isNewAsset ? handleCreate : handleUpdate}
             asset={props.asset}
-            enums={props.enums}
             taxonomies={props.taxonomies}
         />
     </div>

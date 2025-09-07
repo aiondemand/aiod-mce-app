@@ -1,5 +1,5 @@
 import { Resource } from "@/lib/server/types";
-import { assetTypeToLabel } from "./utils";
+import { assetTypeToLabel, ensurePlural } from "./utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, PlusIcon } from "lucide-react";
 import { AssetCard } from "./asset-card";
@@ -68,7 +68,7 @@ const AssetTypeSection = ({ assetType, assets, hideIfEmpty = false }: AssetTypeS
                             asChild
                             variant="outline"
                         >
-                            <Link href={`/my-assets/${assetType}/editor/new`}>
+                            <Link href={`/my-assets/${ensurePlural(assetType)}/editor/new`}>
                                 <PlusIcon className="size-4 text-accent" />
                                 Add a new entry for {assetTypeToLabel(assetType)}
                             </Link>

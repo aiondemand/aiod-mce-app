@@ -1,11 +1,12 @@
 "use client"
 
-import { News, Resource, Event, Project, EnumTypes, Organisation } from "@/lib/server/types";
+import { News, Resource, Event, Project, Organisation } from "@/lib/server/types";
 import { Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { NewsEditor } from "./forms/news-editor";
 import { EventEditor } from "./forms/event-editor";
 import { ProjectEditor } from "./forms/project-editor";
 import { OrganisationEditor } from "./forms/organisation-editor";
+import { ensurePlural } from "@/app/(default)/_components/utils";
 
 interface AssetEditorFormProps {
     isPending: boolean;
@@ -13,13 +14,13 @@ interface AssetEditorFormProps {
     onChange: (asset: Resource) => void;
     asset?: Resource;
     assetType: string;
-    enums: Record<EnumTypes, string[]>;
     taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
 export const AssetEditorForm: React.FC<AssetEditorFormProps> = (props) => {
+    const assetType = ensurePlural(props.assetType);
 
-    switch (props.assetType) {
+    switch (assetType) {
         case 'news':
             return <NewsEditor
                 {...props}

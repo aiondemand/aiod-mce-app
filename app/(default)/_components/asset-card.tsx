@@ -2,13 +2,15 @@ import { cn } from "@/lib/utils";
 import { GenericAsset } from "../my-assets/[assetType]/_components/utils";
 import { PencilIcon } from "lucide-react";
 import Link from "next/link";
+import { ensurePlural } from "@/app/(default)/_components/utils";
 
 interface AssetCardProps {
     asset: GenericAsset;
     assetType: string;
 }
 
-export const AssetCard: React.FC<AssetCardProps> = ({ asset, assetType }) => {
+export const AssetCard: React.FC<AssetCardProps> = ({ asset, ...props }) => {
+    const assetType = ensurePlural(props.assetType);
 
     return <Link
         href={`/my-assets/${assetType}/editor/${asset.identifier}`}
