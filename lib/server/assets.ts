@@ -126,7 +126,8 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
 
     try {
         const response = await AiodAPI.fetch<Resource>(`/${assetType}/${assetId}`, session.accessToken, {
-            method: 'PUT', body: JSON.stringify(asset),
+            method: 'PUT',
+            body: JSON.stringify(asset),
             headers: {
                 'Content-Type': 'application/json',
             },

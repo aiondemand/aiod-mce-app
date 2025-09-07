@@ -19,10 +19,11 @@ export const trpc = createTRPCOptionsProxy({
 });
 
 // If your router is on a separate server, pass a client:
-createTRPCOptionsProxy({
+/* createTRPCOptionsProxy({
   client: createTRPCClient({ links: [httpLink({ url: getUrl() })] }),
   queryClient: getQueryClient,
 });
+ */
 
 export function HydrateClient(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();

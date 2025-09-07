@@ -1,5 +1,5 @@
 
-export const getTokenHeader = (accessToken?: string): object | { Autorization: string } => {
+export const getTokenHeader = (accessToken?: string): object | { Authorization: string } => {
     if (!accessToken) {
         return {};
     }
