@@ -2,7 +2,7 @@ import { Resource } from "@/lib/server/types";
 import { assetTypeToLabel } from "./utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, PlusIcon } from "lucide-react";
-import { AssetCard } from "../my-assets/[assetType]/_components/asset-card";
+import { AssetCard } from "./asset-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

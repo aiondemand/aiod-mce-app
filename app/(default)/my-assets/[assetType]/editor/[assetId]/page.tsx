@@ -1,4 +1,3 @@
-import { assetTypeToLabel } from "../../_components/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
@@ -8,6 +7,7 @@ import { getAsset } from "@/lib/server/assets";
 import { ErrorAlert } from "@/components/error-alert";
 import { fetchAllEnums } from "@/lib/server/enums";
 import { fetchAllTaxonomies } from "@/lib/server/taxonomies";
+import { assetTypeToLabel } from "@/app/(default)/_components/utils";
 
 interface PageProps {
     params: Promise<{ assetType: string, assetId: string }>
@@ -53,7 +53,7 @@ export default async function Page({ params }: PageProps) {
     return <>
         <Button variant="ghost"
             asChild>
-            <Link href={`/my-assets/${assetType}`}>
+            <Link href={`/`}>
                 <ArrowLeftIcon className="w-4 h-4" />
                 Back to asset list
             </Link>
