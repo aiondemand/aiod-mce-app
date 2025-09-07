@@ -5,7 +5,7 @@ import { renewToken } from "./lib/server/auth"
 import logger from "./lib/logger"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-    basePath: (process.env.BASEPATH || '') + "/api/auth",
+    basePath: (process.env.NEXT_PUBLIC_BASEPATH || '') + "/api/auth",
     pages: {
         //signIn: "/login",
     },

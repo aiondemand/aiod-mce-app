@@ -16,7 +16,7 @@ AUTH_KEYCLOAK_CLIENT_ID=your-dev-client-id
 AUTH_KEYCLOAK_CLIENT_SECRET=your-dev-client-secret
 AUTH_KEYCLOAK_ISSUER=https://aiod-dev.i3a.es/aiod-auth/realms/aiod #example
 BACKEND_URL=https://aiod-dev.i3a.es #example
-BASEPATH=/mce #example or remove this line if not needed
+NEXT_PUBLIC_BASEPATH=/mce #example or remove this line if not needed
 ```
 
 Additional line `AUTH_TRUST_HOST=true` if you need it and know what you are doing.

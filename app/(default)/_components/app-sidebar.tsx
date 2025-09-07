@@ -67,7 +67,7 @@ const AppSidebar: React.FC = () => {
                         ratio={3508 / 2241}
                     >
                         <Image
-                            src={`${process.env.BASEPATH}/logo-white.png`}
+                            src={`${process.env.NEXT_PUBLIC_BASEPATH}/logo-white.png`}
                             alt="Logo"
                             fill
                             className="object-contain"

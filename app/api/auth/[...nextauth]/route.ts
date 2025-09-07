@@ -2,7 +2,7 @@ import { handlers } from "@/auth";
 import logger from "@/lib/logger";
 import { NextRequest } from "next/server";
 
-const basePath = process.env.BASEPATH ?? '';
+const basePath = process.env.NEXT_PUBLIC_BASEPATH ?? '';
 
 function rewriteRequest(req: NextRequest) {
     const {
