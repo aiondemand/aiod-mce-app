@@ -1,20 +1,14 @@
-import { LoginButton } from "@/components/login-button";
+import MyAssets from "./_components/my-assets";
 import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 
 export default async function Home() {
+  const session = await auth()
 
-  redirect("/my-assets/datasets")
 
-  return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="font-jura text-4xl font-bold text-foreground">Hello World</h1>
-      <LoginButton />
+  if (!session?.user) {
+    redirect("/login")
+  }
 
-      <div className="bg-secondary text-secondary-foreground font-sans">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-        </p>
-      </div>
-    </div>
-  );
+  return <MyAssets />
 }

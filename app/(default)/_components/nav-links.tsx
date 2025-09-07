@@ -10,9 +10,11 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { supportedAssetTypes } from "./utils";
 
 
 interface NavItem {
+    id: string;
     label: string;
     url?: string;
     items?: NavItem[];
@@ -21,11 +23,14 @@ interface NavItem {
 export const NavLinks: React.FC<{ navItems: NavItem[] }> = ({ navItems }) => {
     const pathname = usePathname();
 
-
     return (
         <>
             {navItems.map((item) => {
                 if (!item.items) {
+                    if (!supportedAssetTypes.includes(item.id)) {
+                        return null;
+                    }
+
                     return (
                         <SidebarMenu className="mb-[1px]"
                             key={item.label}
@@ -44,6 +49,10 @@ export const NavLinks: React.FC<{ navItems: NavItem[] }> = ({ navItems }) => {
                             </SidebarMenuItem>
                         </SidebarMenu>
                     )
+                }
+
+                if (item.items.every((item) => !supportedAssetTypes.includes(item.id))) {
+                    return null;
                 }
 
                 return (
@@ -70,17 +79,23 @@ export const NavLinks: React.FC<{ navItems: NavItem[] }> = ({ navItems }) => {
                             <CollapsibleContent>
                                 <SidebarGroupContent className="">
                                     <SidebarMenu className="gap-0">
-                                        {item.items.map((item) => (
-                                            <SidebarMenuItem key={item.label}>
-                                                <SidebarMenuButton asChild
-                                                    className={cn("mt-[2px] text-sm h-auto px-6 py-4 font-sans text-sidebar-foreground rounded-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground opacity-80", pathname.startsWith(item.url!) && "font-medium text-secondary-foreground underline underline-offset-4")}
-                                                >
-                                                    <Link href={item.url!}>
-                                                        {item.label}
-                                                    </Link>
-                                                </SidebarMenuButton>
-                                            </SidebarMenuItem>
-                                        ))}
+                                        {item.items.map((item) => {
+                                            if (!supportedAssetTypes.includes(item.id)) {
+                                                return null;
+                                            }
+
+                                            return (
+                                                <SidebarMenuItem key={item.label}>
+                                                    <SidebarMenuButton asChild
+                                                        className={cn("mt-[2px] text-sm h-auto px-6 py-4 font-sans text-sidebar-foreground rounded-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground opacity-80", pathname.startsWith(item.url!) && "font-medium text-secondary-foreground underline underline-offset-4")}
+                                                    >
+                                                        <Link href={item.url!}>
+                                                            {item.label}
+                                                        </Link>
+                                                    </SidebarMenuButton>
+                                                </SidebarMenuItem>
+                                            )
+                                        })}
                                     </SidebarMenu>
                                 </SidebarGroupContent>
                             </CollapsibleContent>

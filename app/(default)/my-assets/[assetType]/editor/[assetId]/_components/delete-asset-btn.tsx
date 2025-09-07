@@ -26,7 +26,7 @@ const DeleteAssetBtn: React.FC<DeleteAssetBtnProps> = (props) => {
                 toast.error(resp.error);
             } else {
                 toast.success('Asset deleted successfully');
-                router.replace(`/my-assets/${props.assetType}`);
+                router.replace(`/`);
             }
         });
     }

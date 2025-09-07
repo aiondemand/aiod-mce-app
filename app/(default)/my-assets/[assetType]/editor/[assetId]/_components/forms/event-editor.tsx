@@ -9,11 +9,14 @@ import { Event, eventSchema } from "@/lib/server/types";
 import FormSection from "../form-section";
 import { SubmitSection } from "./submit-section";
 
-import { Taxonomy, TaxonomyType } from "@/lib/server/types";
+import { TaxonomyType } from "@/lib/server/types";
 import { Textarea } from "@/components/ui/textarea";
 import TaxonomySelector from "@/components/taxonomy-selector";
 import { convertTaxonomyToEntries } from "@/lib/taxonomy-utils";
 import { DatePicker } from "@/components/ui/datepicker";
+import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 
 
 interface EventEditorProps {
@@ -21,10 +24,14 @@ interface EventEditorProps {
     buttonText: string;
     onChange: (asset: Event) => void;
     asset?: Event;
-    taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
 export const EventEditor: React.FC<EventEditorProps> = (props) => {
+    const trpc = useTRPC();
+    const { data: taxonomyIndustialSectors, isLoading: isLoadingIndustialSectors, error: errorIndustialSectors } = useQuery(
+        trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.INDUSTRIAL_SECTORS }),
+    );
+
     const form = useForm<Event>({
         resolver: zodResolver(eventSchema),
         defaultValues: props.asset ? props.asset : {
@@ -33,11 +40,15 @@ export const EventEditor: React.FC<EventEditorProps> = (props) => {
                 plain: '',
             },
             mode: 'offline',
-            start_date: '',
-            end_date: '',
+            start_date: undefined,
+            end_date: undefined,
             industrial_sector: [],
         },
     });
+
+    if (isLoadingIndustialSectors) return <LoadingTaxonomiesIndicator />;
+    if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
+
 
     function onSubmit(values: Event) {
         console.log(values);
@@ -145,7 +156,7 @@ export const EventEditor: React.FC<EventEditorProps> = (props) => {
                                     <TaxonomySelector
                                         values={field.value || []}
                                         onChange={field.onChange}
-                                        taxonomy={convertTaxonomyToEntries(props.taxonomies.industrial_sectors)}
+                                        taxonomy={convertTaxonomyToEntries(taxonomyIndustialSectors || [])}
                                     />
                                 </FormControl>
                                 <FormDescription>

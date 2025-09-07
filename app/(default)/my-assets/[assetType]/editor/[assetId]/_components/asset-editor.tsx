@@ -4,9 +4,8 @@ import { createAsset, updateAsset } from "@/lib/server/assets";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Resource, Taxonomy, TaxonomyType } from "@/lib/server/types";
+import { Resource } from "@/lib/server/types";
 import { AssetEditorForm } from "./asset-editor-form";
-import { EnumTypes } from "@/lib/server/types";
 
 
 interface AssetEditorProps {
@@ -14,8 +13,6 @@ interface AssetEditorProps {
     assetId: string
     isNewAsset: boolean
     asset?: Resource
-    enums: Record<EnumTypes, string[]>
-    taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
 const AssetEditor: React.FC<AssetEditorProps> = (props) => {
@@ -37,7 +34,7 @@ const AssetEditor: React.FC<AssetEditorProps> = (props) => {
             const resp = await createAsset(props.assetType, asset);
             if (resp?.error) {
                 toast.error(resp.error);
-            } else {
+            } else if (resp.asset) {
                 toast.success('Asset created successfully');
                 router.replace(`/my-assets/${props.assetType}/editor/${resp.asset.identifier}`);
             }
@@ -64,8 +61,6 @@ const AssetEditor: React.FC<AssetEditorProps> = (props) => {
             buttonText={props.isNewAsset ? 'Create' : 'Update'}
             onChange={props.isNewAsset ? handleCreate : handleUpdate}
             asset={props.asset}
-            enums={props.enums}
-            taxonomies={props.taxonomies}
         />
     </div>
 };

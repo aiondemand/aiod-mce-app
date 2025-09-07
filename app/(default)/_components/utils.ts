@@ -1,15 +1,15 @@
-import { Suspense } from "react";
-import { AssetListLoader, AssetListLoaderSkeleton } from "./_components/asset-list-loader";
+export const supportedAssetTypes = [
+    "news",
+    "event",
+    "organisations",
+    "projects",
+]
 
-export const dynamic = 'force-dynamic';
-interface PageProps {
-    params: Promise<{ assetType: string }>
-}
-
-const assetTypeToLabel = (assetType: string) => {
-    switch (assetType) {
+export const assetTypeToLabel = (assetType: string) => {
+    const sanitized = ensurePlural(assetType).toLowerCase();
+    switch (sanitized) {
         case "datasets":
-            return "Data Sets";
+            return "Datasets";
         case "ml_models":
             return "ML Models";
         case "computational_assets":
@@ -41,21 +41,14 @@ const assetTypeToLabel = (assetType: string) => {
     }
 }
 
-export default async function Page({ params }: PageProps) {
-    const { assetType } = await params;
+export const removePlural = (assetType: string) => {
+    const lower = assetType.toLowerCase();
+    if (lower === "news") return "news";
+    return lower.endsWith("s") ? lower.slice(0, -1) : lower;
+}
 
-    return <>
-        <h1 className="text-2xl font-bold font-jura">
-            My Assets -
-            <span className="text-secondary-foreground ms-2">
-                {assetTypeToLabel(assetType)}
-            </span>
-        </h1>
-
-        <div className="mt-8">
-            <Suspense fallback={<AssetListLoaderSkeleton />}>
-                <AssetListLoader assetType={assetType} />
-            </Suspense>
-        </div>
-    </>
+export const ensurePlural = (assetType: string) => {
+    const lower = assetType.toLowerCase();
+    if (lower === "news") return "news";
+    return lower.endsWith("s") ? lower : lower + "s";
 }

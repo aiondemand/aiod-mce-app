@@ -9,11 +9,14 @@ import { News, newsSchema } from "@/lib/server/types";
 import FormSection from "../form-section";
 import { SubmitSection } from "./submit-section";
 
-import { Taxonomy, TaxonomyType } from "@/lib/server/types";
+import { TaxonomyType } from "@/lib/server/types";
 import { Textarea } from "@/components/ui/textarea";
 import KeywordEditor from "@/components/keyword-editor";
 import TaxonomySelector from "@/components/taxonomy-selector";
 import { convertTaxonomyToEntries } from "@/lib/taxonomy-utils";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
+import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 
 
 interface NewsEditorProps {
@@ -21,10 +24,19 @@ interface NewsEditorProps {
     buttonText: string;
     onChange: (asset: News) => void;
     asset?: News;
-    taxonomies: Record<TaxonomyType, Taxonomy[]>;
 }
 
 export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
+    const trpc = useTRPC();
+    const { data: taxonomyIndustialSectors, isLoading: isLoadingIndustialSectors, error: errorIndustialSectors } = useQuery(
+        trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.INDUSTRIAL_SECTORS }),
+    );
+
+    const { data: taxonomyNewsCategories, isLoading: isLoadingNewsCategories, error: errorNewsCategories } = useQuery(
+        trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.NEWS_CATEGORIES }),
+    );
+
+
     const form = useForm<News>({
         resolver: zodResolver(newsSchema),
         defaultValues: props.asset ? props.asset : {
@@ -38,6 +50,10 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
             keyword: [],
         },
     });
+
+    if (isLoadingIndustialSectors || isLoadingNewsCategories) return <LoadingTaxonomiesIndicator />;
+    if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
+    if (errorNewsCategories) return <div>Error: {errorNewsCategories.message}</div>;
 
     // Watch the category field to conditionally show business category
     const watchedCategories = form.watch("category");
@@ -103,7 +119,7 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
                                     <TaxonomySelector
                                         values={field.value || []}
                                         onChange={field.onChange}
-                                        taxonomy={convertTaxonomyToEntries(props.taxonomies.news_categorys)}
+                                        taxonomy={convertTaxonomyToEntries(taxonomyNewsCategories || [])}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -122,7 +138,7 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
                                         <TaxonomySelector
                                             values={field.value || []}
                                             onChange={field.onChange}
-                                            taxonomy={convertTaxonomyToEntries(props.taxonomies.industrial_sectors)}
+                                            taxonomy={convertTaxonomyToEntries(taxonomyIndustialSectors || [])}
                                         />
                                     </FormControl>
                                     <FormDescription>

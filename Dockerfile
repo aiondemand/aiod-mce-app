@@ -16,7 +16,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV BASEPATH /mce
+ENV NEXT_PUBLIC_BASEPATH /mce
 
 # Build application
 RUN npm run build

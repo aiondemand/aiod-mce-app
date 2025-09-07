@@ -9,20 +9,37 @@ import { Organisation, organisationSchema } from "@/lib/server/types";
 import FormSection from "../form-section";
 import { SubmitSection } from "./submit-section";
 
-import { Taxonomy, TaxonomyType } from "@/lib/server/types";
+import { TaxonomyType } from "@/lib/server/types";
 import { Textarea } from "@/components/ui/textarea";
 import TaxonomySelector from "@/components/taxonomy-selector";
 import { convertTaxonomyToEntries } from "@/lib/taxonomy-utils";
+import { useQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
+import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 
 interface OrganisationEditorProps {
     isPending: boolean;
     buttonText: string;
     onChange: (asset: Organisation) => void;
     asset?: Organisation;
-    taxonomies: Record<TaxonomyType, Taxonomy[]>;
+
 }
 
 export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => {
+    const trpc = useTRPC();
+    const { data: taxonomyIndustialSectors, isLoading: isLoadingIndustialSectors, error: errorIndustialSectors } = useQuery(
+        trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.INDUSTRIAL_SECTORS }),
+    );
+
+    const { data: taxonomyResearchAreas, isLoading: isLoadingResearchAreas, error: errorResearchAreas } = useQuery(
+        trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.RESEARCH_AREAS }),
+    );
+
+    const { data: taxonomyScientificDomains, isLoading: isLoadingScientificDomains, error: errorScientificDomains } = useQuery(
+        trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.SCIENTIFIC_DOMAINS }),
+    );
+
+
     const form = useForm<Organisation>({
         resolver: zodResolver(organisationSchema),
         defaultValues: props.asset ? props.asset : {
@@ -37,6 +54,12 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
             scientific_domain: [], // Scientific domain taxonomy
         },
     });
+
+
+    if (isLoadingIndustialSectors || isLoadingResearchAreas || isLoadingScientificDomains) return <LoadingTaxonomiesIndicator />;
+    if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
+    if (errorResearchAreas) return <div>Error: {errorResearchAreas.message}</div>;
+    if (errorScientificDomains) return <div>Error: {errorScientificDomains.message}</div>;
 
     function onSubmit(values: Organisation) {
         console.log(values);
@@ -137,7 +160,7 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
                                     <TaxonomySelector
                                         values={field.value || []}
                                         onChange={field.onChange}
-                                        taxonomy={convertTaxonomyToEntries(props.taxonomies.research_areas)}
+                                        taxonomy={convertTaxonomyToEntries(taxonomyResearchAreas || [])}
                                     />
                                 </FormControl>
                                 <FormDescription>
@@ -158,7 +181,7 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
                                     <TaxonomySelector
                                         values={field.value || []}
                                         onChange={field.onChange}
-                                        taxonomy={convertTaxonomyToEntries(props.taxonomies.industrial_sectors)}
+                                        taxonomy={convertTaxonomyToEntries(taxonomyIndustialSectors || [])}
                                     />
                                 </FormControl>
                                 <FormDescription>
@@ -179,7 +202,7 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
                                     <TaxonomySelector
                                         values={field.value || []}
                                         onChange={field.onChange}
-                                        taxonomy={convertTaxonomyToEntries(props.taxonomies.scientific_domains)}
+                                        taxonomy={convertTaxonomyToEntries(taxonomyScientificDomains || [])}
                                     />
                                 </FormControl>
                                 <FormDescription>
