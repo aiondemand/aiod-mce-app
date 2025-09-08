@@ -76,7 +76,7 @@ const MyAssets = () => {
             )}
 
 
-            <div className="space-y-8">
+            <div className="space-y-8 pb-12">
                 {supportedAssetTypes.map((assetType) => (
                     <AssetTypeSection
                         key={assetType}

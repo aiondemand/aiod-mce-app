@@ -41,8 +41,8 @@ export const ProjectEditor: React.FC<ProjectEditorProps> = (props) => {
             }, // project description
             alternate_name: [], // acronym
             same_as: '', // project website
-            start_date: '',
-            end_date: '',
+            start_date: undefined,
+            end_date: undefined,
             industrial_sector: [],
         },
     });

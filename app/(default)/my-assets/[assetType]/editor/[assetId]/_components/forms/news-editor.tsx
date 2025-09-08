@@ -40,7 +40,7 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
     const form = useForm<News>({
         resolver: zodResolver(newsSchema),
         defaultValues: props.asset ? props.asset : {
-            name: 'todo',
+            name: '',
             headline: '', // title
             content: {
                 plain: '',
