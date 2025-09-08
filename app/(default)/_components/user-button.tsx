@@ -2,17 +2,17 @@ import { auth } from "@/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronsUpDown, LogOut } from "lucide-react";
-import LoginButton from "./login-button";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/actions/login";
 import logger from "@/lib/logger";
+import ClientLogin from "@/app/(public)/login/_components/client-login";
 
 export default async function UserButton() {
     const session = await auth()
     //console.log(session)
 
     if (!session?.user) {
-        return <LoginButton />
+        return <ClientLogin />
     }
 
     const user = {
