@@ -42,6 +42,7 @@ export const EventEditor: React.FC<EventEditorProps> = (props) => {
             mode: 'offline',
             start_date: undefined,
             end_date: undefined,
+            same_as: '',
             industrial_sector: [],
         },
     });
@@ -58,7 +59,7 @@ export const EventEditor: React.FC<EventEditorProps> = (props) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 pb-[74px]">
-                <FormSection title="Required Information">
+                <FormSection title="Basic Information">
                     <FormField
                         control={form.control}
                         name="name"
@@ -140,6 +141,22 @@ export const EventEditor: React.FC<EventEditorProps> = (props) => {
                                     When the event ends
                                 </FormDescription>
                                 <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="same_as"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Website</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="Enter website URL (e.g., https://example.com)"
+                                        {...field}
+                                    />
+                                </FormControl>
                             </FormItem>
                         )}
                     />
