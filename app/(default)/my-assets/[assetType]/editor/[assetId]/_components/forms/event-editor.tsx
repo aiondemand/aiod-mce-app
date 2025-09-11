@@ -39,7 +39,7 @@ export const EventEditor: React.FC<EventEditorProps> = (props) => {
             description: {
                 plain: '',
             },
-            mode: 'offline',
+            mode: 'Physical',
             start_date: undefined,
             end_date: undefined,
             same_as: '',
