@@ -61,6 +61,7 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
 
 
     if (errorNewsCategories) return <div>Error: {errorNewsCategories.message}</div>;
+    if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
 
     // Watch the category field to conditionally show business category
     const watchedCategories = form.watch("category");

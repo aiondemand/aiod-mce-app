@@ -4,12 +4,10 @@ import { logout } from "@/actions/login";
 import { useEffect } from "react";
 
 const LogoutClient = () => {
-
-    const callLogout = async () => {
-        await logout();
-    }
-
     useEffect(() => {
+        const callLogout = async () => {
+            await logout();
+        }
         callLogout();
     }, [])
 
