@@ -4,9 +4,7 @@ import { cache } from 'react';
 import { createContext } from './context';
 import { makeQueryClient } from './query-client';
 import { appRouter } from './routers/_app';
-import { createTRPCClient, httpLink } from '@trpc/client';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getUrl } from './utils';
 
 // IMPORTANT: Create a stable getter for the query client that
 //            will return the same client during the same request.
@@ -30,9 +28,11 @@ export function HydrateClient(props: { children: React.ReactNode }) {
   return <HydrationBoundary state={dehydrate(queryClient)}>{props.children}</HydrationBoundary>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(queryOptions: T) {
   const queryClient = getQueryClient();
   if (queryOptions.queryKey[1]?.type === 'infinite') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     queryClient.prefetchInfiniteQuery(queryOptions as any);
   } else {
     queryClient.prefetchQuery(queryOptions);

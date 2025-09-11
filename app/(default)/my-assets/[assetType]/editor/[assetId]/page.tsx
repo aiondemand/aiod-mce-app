@@ -6,6 +6,7 @@ import DeleteAssetBtn from "./_components/delete-asset-btn";
 import { getAsset } from "@/lib/server/assets";
 import { ErrorAlert } from "@/components/error-alert";
 import { assetTypeToLabel } from "@/app/(default)/_components/utils";
+import LogoutClient from "@/components/logout-client";
 
 interface PageProps {
     params: Promise<{ assetType: string, assetId: string }>
@@ -20,6 +21,9 @@ export default async function Page({ params }: PageProps) {
     if (!isNew) {
         const assetResp = await getAsset(assetType, assetId);
         if (assetResp.error) {
+            if (assetResp.error === 'Unauthorized') {
+                return <LogoutClient />
+            }
             content = <div className="flex flex-col gap-2 items-center justify-center h-full mt-8">
                 <ErrorAlert
                     title="Error loading asset"

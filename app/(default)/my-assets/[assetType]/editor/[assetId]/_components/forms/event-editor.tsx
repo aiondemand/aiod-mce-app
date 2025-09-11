@@ -17,6 +17,7 @@ import { DatePicker } from "@/components/ui/datepicker";
 import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
+import LogoutClient from "@/components/logout-client";
 
 
 interface EventEditorProps {
@@ -39,7 +40,7 @@ export const EventEditor: React.FC<EventEditorProps> = (props) => {
             description: {
                 plain: '',
             },
-            mode: 'offline',
+            mode: 'Physical',
             start_date: undefined,
             end_date: undefined,
             same_as: '',
@@ -48,6 +49,10 @@ export const EventEditor: React.FC<EventEditorProps> = (props) => {
     });
 
     if (isLoadingIndustialSectors) return <LoadingTaxonomiesIndicator />;
+    const hasUnauthorizedError = errorIndustialSectors?.message === 'UNAUTHORIZED';
+    if (hasUnauthorizedError) {
+        return <LogoutClient />
+    }
     if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
 
 

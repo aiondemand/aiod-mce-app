@@ -11,6 +11,10 @@ export async function login() {
 }
 
 export async function logout() {
-    await signOut()
+    await signOut({
+        redirect: true,
+        redirectTo: '/' + process.env.NEXT_PUBLIC_BASEPATH
+    })
+
     revalidatePath('/')
 }
