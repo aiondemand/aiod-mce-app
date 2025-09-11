@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/components/error-alert';
 import { removePlural, supportedAssetTypes } from './utils';
 import AssetTypeSection from './asset-type-section';
 import { Input } from '@/components/ui/input';
+import LogoutClient from '@/components/logout-client';
 
 const MyAssets = () => {
     const [search, setSearch] = useState("");
@@ -25,13 +26,17 @@ const MyAssets = () => {
     </div>
 
 
-
-    if (error) return <div className="flex items-center justify-center h-screen">
-        <ErrorAlert
-            title="Error loading resources"
-            description={error?.message ?? 'Unknown error'}
-        />
-    </div>
+    if (error) {
+        if (error?.message === 'UNAUTHORIZED') {
+            return <LogoutClient />
+        }
+        return <div className="flex items-center justify-center h-screen">
+            <ErrorAlert
+                title="Error loading resources"
+                description={error?.message ?? 'Unknown error'}
+            />
+        </div>
+    }
 
     const hasSearchResults = () => {
         for (const key in data?.assets) {

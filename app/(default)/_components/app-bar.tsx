@@ -25,7 +25,9 @@ const AppBar = () => {
 
         </Link>
 
-        <UserButton />
+        <div>
+            <UserButton />
+        </div>
     </div>
 }
 

@@ -17,6 +17,7 @@ import { convertTaxonomyToEntries } from "@/lib/taxonomy-utils";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
+import LogoutClient from "@/components/logout-client";
 
 
 interface NewsEditorProps {
@@ -52,7 +53,13 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
     });
 
     if (isLoadingIndustialSectors || isLoadingNewsCategories) return <LoadingTaxonomiesIndicator />;
-    if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
+
+    const hasUnauthorizedError = errorIndustialSectors?.message === 'UNAUTHORIZED' || errorNewsCategories?.message === 'UNAUTHORIZED';
+    if (hasUnauthorizedError) {
+        return <LogoutClient />
+    }
+
+
     if (errorNewsCategories) return <div>Error: {errorNewsCategories.message}</div>;
 
     // Watch the category field to conditionally show business category

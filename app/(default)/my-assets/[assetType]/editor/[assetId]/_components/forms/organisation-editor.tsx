@@ -16,6 +16,7 @@ import { convertTaxonomyToEntries } from "@/lib/taxonomy-utils";
 import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
+import LogoutClient from "@/components/logout-client";
 
 interface OrganisationEditorProps {
     isPending: boolean;
@@ -57,6 +58,11 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
 
 
     if (isLoadingIndustialSectors || isLoadingResearchAreas || isLoadingScientificDomains) return <LoadingTaxonomiesIndicator />;
+    const hasUnauthorizedError = errorIndustialSectors?.message === 'UNAUTHORIZED' || errorResearchAreas?.message === 'UNAUTHORIZED' || errorScientificDomains?.message === 'UNAUTHORIZED';
+    if (hasUnauthorizedError) {
+        return <LogoutClient />
+    }
+
     if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
     if (errorResearchAreas) return <div>Error: {errorResearchAreas.message}</div>;
     if (errorScientificDomains) return <div>Error: {errorScientificDomains.message}</div>;

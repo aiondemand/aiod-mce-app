@@ -17,6 +17,7 @@ import { DatePicker } from "@/components/ui/datepicker";
 import { useTRPC } from "@/trpc/client";
 import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 import { useQuery } from "@tanstack/react-query";
+import LogoutClient from "@/components/logout-client";
 
 
 interface ProjectEditorProps {
@@ -48,6 +49,10 @@ export const ProjectEditor: React.FC<ProjectEditorProps> = (props) => {
     });
 
     if (isLoadingIndustialSectors) return <LoadingTaxonomiesIndicator />;
+    const hasUnauthorizedError = errorIndustialSectors?.message === 'UNAUTHORIZED';
+    if (hasUnauthorizedError) {
+        return <LogoutClient />
+    }
     if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
 
     function onSubmit(values: Project) {
