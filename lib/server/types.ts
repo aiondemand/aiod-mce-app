@@ -229,7 +229,7 @@ export const projectSchema = resourceBaseSchema.extend({
 export type Project = z.infer<typeof projectSchema>;
 
 export const organisationSchema = resourceBaseSchema.extend({
-
+  type: z.string().optional(),
 });
 
 export type Organisation = z.infer<typeof organisationSchema>;
@@ -245,6 +245,7 @@ export enum TaxonomyType {
   PUBLICATION_TYPES = "publication_types",
   NEWS_CATEGORIES = "news_categorys", // is typo in the API...
   LICENSES = "licenses",
+  ORGANISATION_TYPES = "organisation_types",
 }
 
 export interface Taxonomy {

@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 import LogoutClient from "@/components/logout-client";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface OrganisationEditorProps {
     isPending: boolean;
@@ -40,6 +41,10 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
         trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.SCIENTIFIC_DOMAINS }),
     );
 
+    const { data: taxonomyOrganisationTypes, isLoading: isLoadingOrganisationTypes, error: errorOrganisationTypes } = useQuery(
+        trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.ORGANISATION_TYPES }),
+    );
+
 
     const form = useForm<Organisation>({
         resolver: zodResolver(organisationSchema),
@@ -57,8 +62,8 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
     });
 
 
-    if (isLoadingIndustialSectors || isLoadingResearchAreas || isLoadingScientificDomains) return <LoadingTaxonomiesIndicator />;
-    const hasUnauthorizedError = errorIndustialSectors?.message === 'UNAUTHORIZED' || errorResearchAreas?.message === 'UNAUTHORIZED' || errorScientificDomains?.message === 'UNAUTHORIZED';
+    if (isLoadingIndustialSectors || isLoadingResearchAreas || isLoadingScientificDomains || isLoadingOrganisationTypes) return <LoadingTaxonomiesIndicator />;
+    const hasUnauthorizedError = errorIndustialSectors?.message === 'UNAUTHORIZED' || errorResearchAreas?.message === 'UNAUTHORIZED' || errorScientificDomains?.message === 'UNAUTHORIZED' || errorOrganisationTypes?.message === 'UNAUTHORIZED';
     if (hasUnauthorizedError) {
         return <LogoutClient />
     }
@@ -66,6 +71,9 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
     if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
     if (errorResearchAreas) return <div>Error: {errorResearchAreas.message}</div>;
     if (errorScientificDomains) return <div>Error: {errorScientificDomains.message}</div>;
+    if (errorOrganisationTypes) return <div>Error: {errorOrganisationTypes.message}</div>;
+
+    console.log(taxonomyOrganisationTypes);
 
     function onSubmit(values: Organisation) {
         console.log(values);
@@ -129,6 +137,31 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
                                 <FormDescription>
                                     A detailed description of your organization
                                 </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="type"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Organisation Type</FormLabel>
+                                <FormControl>
+                                    <Select value={field.value ?? undefined} onValueChange={field.onChange}>
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select organisation type" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {taxonomyOrganisationTypes?.map((t) => (
+                                                <SelectItem key={t.term} value={t.term}>
+                                                    {t.term}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
