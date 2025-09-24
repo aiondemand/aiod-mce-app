@@ -278,6 +278,9 @@ const ContactDetailsEditor: React.FC<ContactDetailsEditorProps> = (props) => {
                             {isSubmitting ? "Validating..." : "Save address"}
                         </LoadingButton>
                     </DialogFooter>
+                    <p className="text-xs text-muted-foreground">
+                        Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright
+                    </p>
                 </form>
             </DialogContent>
         </Dialog>
