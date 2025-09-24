@@ -17,6 +17,8 @@ AUTH_KEYCLOAK_CLIENT_SECRET=your-dev-client-secret
 AUTH_KEYCLOAK_ISSUER=https://aiod-dev.i3a.es/aiod-auth/realms/aiod #example
 BACKEND_URL=https://aiod-dev.i3a.es #example
 NEXT_PUBLIC_BASEPATH=/mce #example or remove this line if not needed
+
+NOMINATIM_USER_AGENT=your-user-agent
 ```
 
 Additional line `AUTH_TRUST_HOST=true` if you need it and know what you are doing.
@@ -48,6 +50,7 @@ AUTH_KEYCLOAK_CLIENT_SECRET=your-client-secret
 AUTH_KEYCLOAK_ISSUER=https://your-keycloak-domain/realms/your-realm
 BACKEND_URL=https://your-backend-url
 NEXT_PUBLIC_BASEPATH=/mce
+NOMINATIM_USER_AGENT=your-user-agent
 ```
 
 > Docker’s --env-file **does not support** comments or quotes.
