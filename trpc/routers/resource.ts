@@ -43,11 +43,15 @@ export const resourceRouter = router({
     })).mutation(async ({ input, ctx }) => {
         let url = '/contacts';
         if (input.contactId) url = `/contacts/${input.contactId}`;
+
         try {
             return await AiodAPI.fetch<{
                 identifier?: string
             }>(url, ctx.token, {
                 method: input.contactId ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify(input.contact),
             });
         } catch (error) {

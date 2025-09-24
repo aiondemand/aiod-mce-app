@@ -31,6 +31,8 @@ const contactToAddressPreview = (contact?: Contact) => {
     if (address.country) addressParts.push(address.country);
     if (address.address) addressParts.push(address.address);
 
+    if (addressParts.length === 0) return noContactAddressPlaceholder;
+
     return addressParts.join(', ');
 }
 
@@ -41,7 +43,7 @@ const contactToCoordinatesPreview = (contact?: Contact) => {
 
     const coordinates = contact.location?.[0]?.geo;
     if (!coordinates) return noContactCoordinatesPlaceholder;
-    return `${coordinates.latitude}, ${coordinates.longitude}`;
+    return `lat: ${coordinates.latitude}°, lon: ${coordinates.longitude}°`;
 }
 
 const ContactDetailsEditor: React.FC<ContactDetailsEditorProps> = (props) => {
@@ -125,13 +127,13 @@ const ContactDetailsEditor: React.FC<ContactDetailsEditorProps> = (props) => {
                             street: street,
                             locality: locality,
                             postal_code: postalCode,
-                            country: country || (contact as Contact)?.location?.[0].address?.country,
+                            // TODO: currently country only expects 3 letter code, so we don't set it
+                            // country: country || (contact as Contact)?.location?.[0].address?.country,
                         },
                         geo: result
                     },
                 ],
             } as Contact;
-
 
             // Save the contact with the updated address
             const resp = await saveContactMutation.mutateAsync({
