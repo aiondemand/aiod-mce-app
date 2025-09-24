@@ -30,8 +30,8 @@ const AddressSchema = z.object({
   address: z.string().max(256).optional().describe(
     "Free text, in case the separate parts such as the street, postal code and country cannot be confidently separated."
   ),
-  country: z.string().length(3).optional().describe(
-    "The country as ISO 3166-1 alpha-3"
+  country: z.string().optional().describe(
+    "Country name"
   ),
 });
 
@@ -230,15 +230,25 @@ export type Project = z.infer<typeof projectSchema>;
 
 export const organisationSchema = resourceBaseSchema.extend({
   type: z.string().optional(),
+  contact_details: z.string().optional(),
 });
 
 export type Organisation = z.infer<typeof organisationSchema>;
 
 export type Resource = Event | Publication | EducationalResource | News | Project | Organisation;
 
+export const contactSchema = z.object({
+  name: z.string(),
+  email: z.array(z.string()).optional(),
+  telephone: z.array(z.string()).optional(),
+  location: z.array(LocationSchema).optional(),
+});
+
+export type Contact = z.infer<typeof contactSchema>;
 
 
 export enum TaxonomyType {
+  COUNTRIES = "countries",
   INDUSTRIAL_SECTORS = "industrial_sectors",
   SCIENTIFIC_DOMAINS = "scientific_domains",
   RESEARCH_AREAS = "research_areas",

@@ -8,7 +8,7 @@ const AddressInputSchema = z.object({
     street: z.string().max(256).optional(),
     postal_code: z.string().max(64).optional(),
     // address: z.string().max(256).optional(),
-    // country: z.string().length(3).optional(),
+    country: z.string().optional(),
 });
 
 type AddressInput = z.infer<typeof AddressInputSchema>;
@@ -16,6 +16,7 @@ type AddressInput = z.infer<typeof AddressInputSchema>;
 async function geocodeWithNominatim(address: AddressInput) {
     const qParts: string[] = [];
 
+    if (address.country) qParts.push(address.country);
     if (address.postal_code) qParts.push(address.postal_code);
     if (address.locality) qParts.push(address.locality);
     if (address.street) qParts.push(address.street);
