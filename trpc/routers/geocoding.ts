@@ -35,7 +35,7 @@ async function geocodeWithNominatim(address: AddressInput) {
     // url.searchParams.set('postalcode', address.postal_code || '');
     // url.searchParams.set('country', address.country || '');
 
-    const userAgent = process.env.NOMINATIM_USER_AGENT || 'aiod-mce-app (contact: unknown@example.com)';
+    const userAgent = process.env.NOMINATIM_USER_AGENT || 'aiod-mce-app (contact: info@aiod.eu)';
 
     const res = await fetch(url.toString(), {
         headers: {

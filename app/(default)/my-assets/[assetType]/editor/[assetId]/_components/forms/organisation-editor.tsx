@@ -13,7 +13,7 @@ import { TaxonomyType } from "@/lib/server/types";
 import { Textarea } from "@/components/ui/textarea";
 import TaxonomySelector from "@/components/taxonomy-selector";
 import { convertTaxonomyToEntries } from "@/lib/taxonomy-utils";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 import LogoutClient from "@/components/logout-client";
@@ -30,7 +30,6 @@ interface OrganisationEditorProps {
 
 export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => {
     const trpc = useTRPC();
-    const queryClient = useQueryClient();
     const { data: taxonomyIndustialSectors, isLoading: isLoadingIndustialSectors, error: errorIndustialSectors } = useQuery(
         trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.INDUSTRIAL_SECTORS }),
     );
@@ -77,34 +76,7 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
     if (errorOrganisationTypes) return <div>Error: {errorOrganisationTypes.message}</div>;
 
     async function onSubmit(values: Organisation) {
-        const address = values?.location?.[0]?.address;
-        if (address) {
-            try {
-                const result = await queryClient.fetchQuery(
-                    trpc.geocoding.lookup.queryOptions({
-                        locality: address.locality,
-                        street: address.street,
-                        postal_code: address.postal_code,
-                    })
-                );
-                const updated = {
-                    ...values,
-                    location: [
-                        {
-                            address,
-                            geo: { latitude: result.latitude, longitude: result.longitude },
-                        },
-                    ],
-                } as Organisation;
-                props.onChange(updated);
-            } catch (err: unknown) {
-                // surface error in form and block submission
-                console.error(err);
-                return;
-            }
-        } else {
-            props.onChange(values);
-        }
+        props.onChange(values);
     }
 
     return (
@@ -196,32 +168,10 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
                 </FormSection>
 
                 <FormSection title="Address">
-
                     <ContactDetailsEditor
                         contactID={form.watch('contact_details')}
                         onChange={(contactID) => form.setValue('contact_details', contactID)}
                     />
-
-
-
-                    {/*  <FormField
-                        control={form.control}
-                        name="location.0.address.address"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Address (free text)</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="If needed, full address line" {...field} />
-                                </FormControl>
-                                <FormDescription>
-                                    Only if the structured fields are insufficient
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
- */}
-
                 </FormSection>
 
 
