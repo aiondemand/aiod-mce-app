@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Contact, Taxonomy, TaxonomyType } from "@/lib/server/types";
 import { useTRPC } from "@/trpc/client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { HomeIcon, Loader2, MapPin, PencilIcon } from "lucide-react";
 import LoadingButton from "@/components/loading-button";
@@ -21,7 +21,7 @@ const noContactAddressPlaceholder = "No contact address";
 const contactToAddressPreview = (contact?: Contact) => {
     if (!contact) return noContactAddressPlaceholder;
 
-    const address = contact.location?.[0].address;
+    const address = contact.location?.[0]?.address;
     if (!address) return noContactAddressPlaceholder;
 
     const addressParts = [];
@@ -39,7 +39,7 @@ const noContactCoordinatesPlaceholder = "No contact coordinates";
 const contactToCoordinatesPreview = (contact?: Contact) => {
     if (!contact) return noContactCoordinatesPlaceholder;
 
-    const coordinates = contact.location?.[0].geo;
+    const coordinates = contact.location?.[0]?.geo;
     if (!coordinates) return noContactCoordinatesPlaceholder;
     return `${coordinates.latitude}, ${coordinates.longitude}`;
 }
@@ -55,6 +55,7 @@ const ContactDetailsEditor: React.FC<ContactDetailsEditorProps> = (props) => {
     const [isCountryOpen, setIsCountryOpen] = useState(false);
     const [submitError, setSubmitError] = useState<string | undefined>(undefined);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
     const { data: contact, isLoading: isLoadingContact, error: errorContact } = useQuery({
         ...trpc.resources.getContact.queryOptions({ contactId: props.contactID || '' }),
         enabled: !!props.contactID,
@@ -65,6 +66,7 @@ const ContactDetailsEditor: React.FC<ContactDetailsEditorProps> = (props) => {
         enabled: !!open,
     })
 
+    const saveContactMutation = useMutation(trpc.resources.saveContact.mutationOptions())
 
     // Prefill the form from the existing contact when available
     useEffect(() => {
@@ -111,16 +113,15 @@ const ContactDetailsEditor: React.FC<ContactDetailsEditorProps> = (props) => {
                     country: country || undefined,
                 })
             );
-            console.log(result);
-
 
             const updatedContact: Contact = {
                 ...contact,
+                name: contact?.name || "organisation location",
                 location: [
                     {
                         ...(contact as Contact)?.location?.[0],
                         address: {
-                            ...(contact as Contact)?.location?.[0].address,
+                            ...(contact as Contact)?.location?.[0]?.address,
                             street: street,
                             locality: locality,
                             postal_code: postalCode,
@@ -130,12 +131,26 @@ const ContactDetailsEditor: React.FC<ContactDetailsEditorProps> = (props) => {
                     },
                 ],
             } as Contact;
-            console.log(updatedContact);
-            // props.onChange(updated);
-            // If we reached here, address was found. Close dialog.
-            // setOpen(false);
+
+
+            // Save the contact with the updated address
+            const resp = await saveContactMutation.mutateAsync({
+                contactId: props.contactID,
+                contact: updatedContact,
+            });
+
+            // Invalidate and refetch the contact data
+            queryClient.invalidateQueries({
+                queryKey: trpc.resources.getContact.queryKey({ contactId: props.contactID || '' }),
+            });
+
+
+            if (resp?.identifier) {
+                props.onChange(resp.identifier);
+            }
+            setOpen(false);
         } catch (err: unknown) {
-            const message = (err as { message?: string })?.message || "Failed to validate address";
+            const message = (err as { message?: string })?.message || "Failed to validate or save address";
             setSubmitError(message);
         } finally {
             setIsSubmitting(false);
