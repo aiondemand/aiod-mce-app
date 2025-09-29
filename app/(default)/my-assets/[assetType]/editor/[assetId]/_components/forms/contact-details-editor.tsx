@@ -127,8 +127,7 @@ const ContactDetailsEditor: React.FC<ContactDetailsEditorProps> = (props) => {
                             street: street,
                             locality: locality,
                             postal_code: postalCode,
-                            // TODO: currently country only expects 3 letter code, so we don't set it
-                            // country: country || (contact as Contact)?.location?.[0].address?.country,
+                            country: country || (contact as Contact)?.location?.[0].address?.country,
                         },
                         geo: result
                     },
