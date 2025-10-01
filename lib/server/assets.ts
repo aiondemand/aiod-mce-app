@@ -80,7 +80,7 @@ export const getMyAssets = async (): Promise<{
         logger.info('fetching my assets');
         const response = await AiodAPI.fetch<{
             [key: string]: Resource[];
-        }>(`/user/resources`, session.accessToken);
+        }>(`/user/resources?limit=1000&offset=0`, session.accessToken);
 
         return {
             assets: response
