@@ -3,6 +3,7 @@ export const supportedAssetTypes = [
     "event",
     "organisations",
     "projects",
+    "case_studies",
 ]
 
 export const assetTypeToLabel = (assetType: string) => {
