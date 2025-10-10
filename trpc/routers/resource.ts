@@ -2,7 +2,7 @@ import { protectedProcedure, router } from '../init';
 
 import logger from '@/lib/logger';
 import { TRPCError } from '@trpc/server';
-import { getMyAssets } from '@/lib/server/assets';
+import { getAssets, getMyAssets } from '@/lib/server/assets';
 import z from 'zod';
 import { Contact, contactSchema } from '@/lib/server/types';
 import { AiodAPI } from '@/lib/server/common';
@@ -10,7 +10,7 @@ import { AiodAPI } from '@/lib/server/common';
 
 
 export const resourceRouter = router({
-    get: protectedProcedure.query(async ({ ctx }) => {
+    get: protectedProcedure.query(async () => {
         try {
             return await getMyAssets();
         } catch (error) {
@@ -62,5 +62,20 @@ export const resourceRouter = router({
             });
         }
     }),
+
+    getProjects: protectedProcedure
+        .input(z.object({ limit: z.number().int().optional() }).optional())
+        .query(async ({ input }) => {
+            try {
+                return await getAssets('projects', input?.limit ?? 1000, 0);
+            }
+            catch (error) {
+                logger.error((error as Error).message);
+                throw new TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Failed to fetch projects from AIOD API',
+                });
+            }
+        }),
 
 });
