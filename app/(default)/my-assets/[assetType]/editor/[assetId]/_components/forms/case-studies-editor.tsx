@@ -16,6 +16,7 @@ import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import LogoutClient from "@/components/logout-client";
+import { ProjectSelector } from "../project-selector";
 
 interface CaseStudiesEditorProps {
     isPending: boolean;
@@ -46,6 +47,7 @@ export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
             relevant_link: [],
             industrial_sector: [],
             research_area: [],
+            is_part_of: [],
         },
     });
 
@@ -204,6 +206,26 @@ export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
                                         taxonomy={convertTaxonomyToEntries(taxonomyResearchAreas || [])}
                                     />
                                 </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="is_part_of"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Related projects</FormLabel>
+                                <FormControl>
+                                    <ProjectSelector
+                                        value={field.value || []}
+                                        onChange={(ids) => field.onChange(ids)}
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    Select one or more projects this case study is part of.
+                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
