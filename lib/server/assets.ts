@@ -15,13 +15,8 @@ export const getAssets = async (assetType: string, limit: number = 1000, offset:
         return { error: 'Unauthorized' };
     }
 
-    const baseUrl = process.env.BACKEND_URL;
-    if (!baseUrl) {
-        return { error: 'Backend URL not configured' };
-    }
-
     try {
-        const response = await fetch(`${baseUrl}/${assetType}?limit=${limit}&offset=${offset}`, {
+        const response = await AiodAPI.fetch<Resource[]>(`/${assetType}?limit=${limit}&offset=${offset}`, session.accessToken, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,11 +24,8 @@ export const getAssets = async (assetType: string, limit: number = 1000, offset:
             },
         });
 
-        if (!response.ok) {
-            return { error: `Failed to fetch ${assetType}: ${response.statusText}` };
-        }
 
-        const data = await response.json();
+        const data = response as Resource[];
         return {
             assets: data
         };

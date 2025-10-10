@@ -18,6 +18,7 @@ import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 import LogoutClient from "@/components/logout-client";
+import { ProjectSelector } from "../project-selector";
 
 
 interface NewsEditorProps {
@@ -49,6 +50,7 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
             category: [],
             industrial_sector: [],
             keyword: [],
+            is_part_of: [],
         },
     });
 
@@ -173,6 +175,26 @@ export const NewsEditor: React.FC<NewsEditorProps> = (props) => {
                                 </FormControl>
                                 <FormDescription>
                                     Add relevant keywords or tags to help categorize and search for this news item.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="is_part_of"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Related projects</FormLabel>
+                                <FormControl>
+                                    <ProjectSelector
+                                        value={field.value || []}
+                                        onChange={(ids) => field.onChange(ids)}
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    Select one or more projects this news item is part of.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
