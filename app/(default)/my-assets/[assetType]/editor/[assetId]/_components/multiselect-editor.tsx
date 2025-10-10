@@ -23,23 +23,23 @@ import { CommandList } from "cmdk"
 
 interface MultiSelectProps {
   value?: string[]
-  onChange?: (newValue: string[]) => void
+  onChange?: (ids: string[]) => void
 
-  items: string[];
+  items: { id: string, name: string }[];
 
 }
 
 const MultiSelect: React.FC<MultiSelectProps> = (props) => {
   const [open, setOpen] = React.useState(false)
-  const [selectedItems, setSelectedItems] = React.useState<typeof props.items>(props.value || [])
+  const [selectedItems, setSelectedItems] = React.useState<string[]>(props.value || [])
 
-  const handleSelect = React.useCallback((item: string) => {
+  const handleSelect = React.useCallback((id: string) => {
     setSelectedItems((prev) => {
-      const isSelected = prev.some((i) => i === item)
+      const isSelected = prev.some((i) => i === id)
       if (isSelected) {
-        return prev.filter((i) => i !== item)
+        return prev.filter((i) => i !== id)
       } else {
-        return [...prev, item]
+        return [...prev, id]
       }
     })
   }, [])
@@ -52,6 +52,7 @@ const MultiSelect: React.FC<MultiSelectProps> = (props) => {
     props.onChange?.(selectedItems)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedItems])
+
 
   return (
     <div className="space-y-2">
@@ -82,18 +83,18 @@ const MultiSelect: React.FC<MultiSelectProps> = (props) => {
               <CommandGroup>
                 {props.items.map((item) => (
                   <CommandItem
-                    key={item}
-                    onSelect={() => handleSelect(item)}
+                    key={item.id}
+                    onSelect={() => handleSelect(item.id)}
                   >
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        selectedItems.some((i) => i === item)
+                        selectedItems.some((i) => i === item.id)
                           ? "opacity-100"
                           : "opacity-0"
                       )}
                     />
-                    {item}
+                    {item.name}
                   </CommandItem>
                 ))}
               </CommandGroup>
@@ -102,31 +103,35 @@ const MultiSelect: React.FC<MultiSelectProps> = (props) => {
         </PopoverContent>
       </Popover>
       <div className="flex flex-wrap gap-1">
-        {selectedItems.map((item) => (
-          <Badge
-            key={item}
-            variant="secondary"
-            className="px-3 py-1 text-xs"
-          >
-            {item}
-            <Button
-              size='icon'
-              type="button"
-              className="p-1 w-fit h-fit ml-1"
-              variant={'ghost'}
-              onMouseDown={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-              }}
-              onClick={() => handleRemove(item)}
-              asChild
+        {selectedItems.map((id) => {
+          const item = props.items.find((i) => i.id === id)
+          if (!item) return null
+          return (
+            <Badge
+              key={item.id}
+              variant="secondary"
+              className="px-3 py-1 text-xs"
             >
-              <span className="" >
-                <X className="size-3" />
-              </span>
-            </Button>
-          </Badge>
-        ))}
+              {item.name}
+              <Button
+                size='icon'
+                type="button"
+                className="p-1 w-fit h-fit ml-1"
+                variant={'ghost'}
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }}
+                onClick={() => handleRemove(item.id)}
+                asChild
+              >
+                <span className="" >
+                  <X className="size-3" />
+                </span>
+              </Button>
+            </Badge>
+          )
+        })}
       </div>
     </div >
   )
