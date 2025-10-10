@@ -1,10 +1,11 @@
 "use client"
 
-import { News, Resource, Event, Project, Organisation } from "@/lib/server/types";
+import { News, Resource, Event, Project, Organisation, CaseStudy } from "@/lib/server/types";
 import { NewsEditor } from "./forms/news-editor";
 import { EventEditor } from "./forms/event-editor";
 import { ProjectEditor } from "./forms/project-editor";
 import { OrganisationEditor } from "./forms/organisation-editor";
+import { CaseStudiesEditor } from "./forms/case-studies-editor";
 import { ensurePlural } from "@/app/(default)/_components/utils";
 
 interface AssetEditorFormProps {
@@ -38,6 +39,11 @@ export const AssetEditorForm: React.FC<AssetEditorFormProps> = (props) => {
             return <OrganisationEditor
                 {...props}
                 asset={props.asset as Organisation}
+            />
+        case 'case_studies':
+            return <CaseStudiesEditor
+                {...props}
+                asset={props.asset as CaseStudy}
             />
         default:
             return <div className="text-center p-4 border bg-secondary border-border rounded-md">
