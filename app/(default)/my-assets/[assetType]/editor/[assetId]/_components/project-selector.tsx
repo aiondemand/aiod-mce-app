@@ -19,7 +19,7 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = (props) => {
         trpc.resources.getProjects.queryOptions({ limit: 1000 })
     );
 
-    const items = React.useMemo(() => (data?.assets || []).map((p: Project, index: number) => ({ id: p.identifier || index.toString(), name: p.name })), [data]);
+    const items = React.useMemo(() => (data?.assets || []).filter((p: Project) => p.identifier).map((p: Project) => ({ id: p.identifier!, name: p.name })), [data]);
 
     if (isLoading) return <div className="flex items-center justify-center py-2 text-sm">
         <Loader2 className="w-4 h-4 animate-spin me-4" />
@@ -32,8 +32,7 @@ export const ProjectSelector: React.FC<ProjectSelectorProps> = (props) => {
                 value={props.value}
                 items={items}
                 onChange={(vals: string[]) => {
-                    const ids = vals.map((v: string) => String(v).split("::")[0]).filter((n: string) => n.length > 0);
-                    props.onChange?.(ids);
+                    props.onChange?.(vals);
                 }}
             />
         </div>
