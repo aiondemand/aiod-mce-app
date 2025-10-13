@@ -27,7 +27,7 @@ interface CaseStudiesEditorProps {
 
 export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
     const trpc = useTRPC();
-    const { data: taxonomyIndustialSectors, isLoading: isLoadingIndustialSectors, error: errorIndustialSectors } = useQuery(
+    const { data: taxonomyIndustrialSectors, isLoading: isLoadingIndustrialSectors, error: errorIndustrialSectors } = useQuery(
         trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.INDUSTRIAL_SECTORS }),
     );
 
@@ -78,14 +78,14 @@ export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
         defaultValues: initialValues,
     });
 
-    if (isLoadingIndustialSectors || isLoadingResearchAreas) return <LoadingTaxonomiesIndicator />;
+    if (isLoadingIndustrialSectors || isLoadingResearchAreas) return <LoadingTaxonomiesIndicator />;
 
-    const hasUnauthorizedError = errorIndustialSectors?.message === 'UNAUTHORIZED' || errorResearchAreas?.message === 'UNAUTHORIZED';
+    const hasUnauthorizedError = errorIndustrialSectors?.message === 'UNAUTHORIZED' || errorResearchAreas?.message === 'UNAUTHORIZED';
     if (hasUnauthorizedError) {
         return <LogoutClient />
     }
 
-    if (errorIndustialSectors) return <div>Error: {errorIndustialSectors.message}</div>;
+    if (errorIndustrialSectors) return <div>Error: {errorIndustrialSectors.message}</div>;
     if (errorResearchAreas) return <div>Error: {errorResearchAreas.message}</div>;
 
     function onSubmit(values: CaseStudy) {
@@ -104,13 +104,6 @@ export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
     // Local helpers for single-value array fields
     const website = (form.watch("relevant_link") || [])[0] || "";
     const setWebsite = (url: string) => {
-        try {
-            // Basic URL validation
-            // Instantiate to validate format; result not used
-            void new URL(url);
-        } catch {
-            // keep setting value; server-side can enforce stricter validation
-        }
         form.setValue("relevant_link", url ? [url] : []);
     }
 
@@ -217,7 +210,7 @@ export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
                                     <TaxonomySelector
                                         values={field.value || []}
                                         onChange={field.onChange}
-                                        taxonomy={convertTaxonomyToEntries(taxonomyIndustialSectors || [])}
+                                        taxonomy={convertTaxonomyToEntries(taxonomyIndustrialSectors || [])}
                                     />
                                 </FormControl>
                                 <FormMessage />
