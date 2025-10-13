@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const AiodEntrySchema = z.object({
-  editor: z.array(z.number().int()),
+  editor: z.array(z.string()),
   status: z.string(),
 });
 
@@ -114,11 +114,11 @@ const resourceBaseSchema = z.object({
   aiod_entry: AiodEntrySchema.optional(),
   alternate_name: z.array(z.string()).optional(),
   application_area: z.array(z.string()).optional(),
-  contact: z.array(z.number().int()).optional(),
+  contact: z.array(z.string()).optional(),
   content: ContentSchema.optional(),
-  creator: z.array(z.number().int()).optional(),
+  creator: z.array(z.string()).optional(),
   description: ContentSchema.optional(),
-  has_part: z.array(z.number().int()).optional(),
+  has_part: z.array(z.string()).optional(),
   industrial_sector: z.array(z.string()).optional(),
   is_part_of: z.array(z.string()).optional(),
   keyword: z.array(z.string()).optional(),
@@ -140,8 +140,8 @@ export const eventSchema = resourceBaseSchema.extend({
   schedule: z.string().max(1800).optional(),
   registration_link: z.string().max(256).optional(),
   mode: z.string(),
-  organiser: z.number().int().optional(),
-  performer: z.array(z.number().int()).optional(),
+  organiser: z.string().optional(),
+  performer: z.array(z.string()).optional(),
   status: z.string().optional(),
 });
 
@@ -193,7 +193,7 @@ export const publicationSchema = resourceBaseSchema.extend({
   isbn: z.string().min(10).max(13).optional().or(z.literal('')),
   issn: z.string().min(8).max(8).optional().or(z.literal('')),
   distribution: z.array(DistributionSchema).optional(),
-  documents: z.array(z.number().int()).optional(),
+  documents: z.array(z.string()).optional(),
   license: z.string().optional(),
   type: z.string().optional(),
 });
