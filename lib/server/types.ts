@@ -235,7 +235,7 @@ export const organisationSchema = resourceBaseSchema.extend({
 
 export type Organisation = z.infer<typeof organisationSchema>;
 
-export type Resource = Event | Publication | EducationalResource | News | Project | Organisation;
+export type Resource = Event | Publication | EducationalResource | News | Project | Organisation | CaseStudy;
 
 export const contactSchema = z.object({
   name: z.string(),
@@ -246,6 +246,13 @@ export const contactSchema = z.object({
 
 export type Contact = z.infer<typeof contactSchema>;
 
+
+export const caseStudySchema = resourceBaseSchema.extend({
+  description: RequiredContentSchema,
+  citation: z.array(z.string()).min(1),
+});
+
+export type CaseStudy = z.infer<typeof caseStudySchema>;
 
 export enum TaxonomyType {
   COUNTRIES = "countries",
