@@ -45,11 +45,13 @@ export const assetTypeToLabel = (assetType: string) => {
 export const removePlural = (assetType: string) => {
     const lower = assetType.toLowerCase();
     if (lower === "news") return "news";
+    if (lower === "case_studies") return "case_study";
     return lower.endsWith("s") ? lower.slice(0, -1) : lower;
 }
 
 export const ensurePlural = (assetType: string) => {
     const lower = assetType.toLowerCase();
     if (lower === "news") return "news";
+    if (lower === "case_study") return "case_studies";
     return lower.endsWith("s") ? lower : lower + "s";
 }
