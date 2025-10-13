@@ -35,9 +35,31 @@ export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
         trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.RESEARCH_AREAS }),
     );
 
-    const form = useForm<CaseStudy>({
-        resolver: zodResolver(caseStudySchema),
-        defaultValues: props.asset ? props.asset : {
+    // Prepare initial values so that:
+    // - If editing, parse JSON stored in description.plain like [{ introduction, content }] and
+    //   surface it as introduction (via citation[0]) and content (description.plain) for editing.
+    // - If creating, start with empty values.
+    const initialValues: CaseStudy = (() => {
+        if (props.asset) {
+            const asset = { ...props.asset } as CaseStudy;
+            const rawPlain = asset.description?.plain || "";
+            let parsedIntroduction = "";
+            let parsedContent = rawPlain;
+            try {
+                const parsed = JSON.parse(rawPlain);
+                if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === "object" && parsed[0] !== null) {
+                    const first = parsed[0] as { introduction?: string; content?: string };
+                    parsedIntroduction = first.introduction || "";
+                    parsedContent = first.content || "";
+                }
+            } catch {
+                // Not JSON; treat rawPlain as content-only
+            }
+            asset.description = { ...asset.description, plain: parsedContent };
+            asset.citation = [parsedIntroduction];
+            return asset;
+        }
+        return {
             name: "",
             description: {
                 plain: "",
@@ -48,7 +70,12 @@ export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
             industrial_sector: [],
             research_area: [],
             is_part_of: [],
-        },
+        } as CaseStudy;
+    })();
+
+    const form = useForm<CaseStudy>({
+        resolver: zodResolver(caseStudySchema),
+        defaultValues: initialValues,
     });
 
     if (isLoadingIndustialSectors || isLoadingResearchAreas) return <LoadingTaxonomiesIndicator />;
@@ -62,10 +89,15 @@ export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
     if (errorResearchAreas) return <div>Error: {errorResearchAreas.message}</div>;
 
     function onSubmit(values: CaseStudy) {
-        // Map single-introduction input into first citation element if missing
-        if (!values.citation || values.citation.length === 0) {
-            values.citation = [""];
-        }
+        // Encode introduction + content into description.plain as JSON object array
+        const introductionValue = (values.citation || [])[0] || "";
+        const contentValue = values.description?.plain || "";
+        values.description = {
+            ...values.description,
+            plain: JSON.stringify([{ introduction: introductionValue, content: contentValue }]),
+        };
+        // Do not store introduction in citation; keep minimal placeholder to satisfy validation
+        values.citation = values.citation && values.citation.length > 0 ? [""] : [""];
         props.onChange(values);
     }
 
