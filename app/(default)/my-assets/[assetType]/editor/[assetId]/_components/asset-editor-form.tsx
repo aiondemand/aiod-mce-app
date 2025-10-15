@@ -1,12 +1,13 @@
 "use client"
 
-import { News, Resource, Event, Project, Organisation, CaseStudy } from "@/lib/server/types";
+import { News, Resource, Event, Project, Organisation, CaseStudy, Dataset } from "@/lib/server/types";
 import { NewsEditor } from "./forms/news-editor";
 import { EventEditor } from "./forms/event-editor";
 import { ProjectEditor } from "./forms/project-editor";
 import { OrganisationEditor } from "./forms/organisation-editor";
 import { CaseStudiesEditor } from "./forms/case-studies-editor";
 import { ensurePlural } from "@/app/(default)/_components/utils";
+import { DatasetEditor } from "./forms/dataset-editor";
 
 interface AssetEditorFormProps {
     isPending: boolean;
@@ -44,6 +45,11 @@ export const AssetEditorForm: React.FC<AssetEditorFormProps> = (props) => {
             return <CaseStudiesEditor
                 {...props}
                 asset={props.asset as CaseStudy}
+            />
+        case 'datasets':
+            return <DatasetEditor
+                {...props}
+                asset={props.asset as Dataset}
             />
         default:
             return <div className="text-center p-4 border bg-secondary border-border rounded-md">

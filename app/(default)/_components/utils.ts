@@ -3,6 +3,7 @@ export const supportedAssetTypes = [
     "event",
     "organisations",
     "projects",
+    "datasets",
     "case_studies",
 ]
 

@@ -58,7 +58,7 @@ export default async function Page({ params }: PageProps) {
 
         <div className="flex items-center gap-2 justify-between">
             <h1 className="text-2xl font-bold font-jura mt-4">
-                {isNew ? "New " : "Edit "}
+                {isNew ? "New entry for " : "Edit entry in "}
                 <span className="text-secondary-foreground">
                     {assetTypeToLabel(assetType)}
                 </span>

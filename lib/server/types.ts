@@ -228,6 +228,12 @@ export const projectSchema = resourceBaseSchema.extend({
 
 export type Project = z.infer<typeof projectSchema>;
 
+export const datasetSchema = resourceBaseSchema.extend({
+  license: z.string().optional(),
+});
+
+export type Dataset = z.infer<typeof datasetSchema>;
+
 export const organisationSchema = resourceBaseSchema.extend({
   type: z.string().optional(),
   contact_details: z.string().optional(),
@@ -235,7 +241,7 @@ export const organisationSchema = resourceBaseSchema.extend({
 
 export type Organisation = z.infer<typeof organisationSchema>;
 
-export type Resource = Event | Publication | EducationalResource | News | Project | Organisation | CaseStudy;
+export type Resource = Event | Publication | EducationalResource | News | Project | Organisation | CaseStudy | Dataset;
 
 export const contactSchema = z.object({
   name: z.string(),
