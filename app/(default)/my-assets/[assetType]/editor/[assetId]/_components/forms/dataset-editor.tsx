@@ -45,7 +45,7 @@ export const DatasetEditor: React.FC<DatasetEditorProps> = (props) => {
     });
 
     if (isLoadingLicenses) return <LoadingTaxonomiesIndicator />;
-    const hasUnauthorizedError = errorLicenses?.message === 'UNAUTHORIZED';
+    const hasUnauthorizedError = errorLicenses?.data?.code === 'UNAUTHORIZED';
     if (hasUnauthorizedError) {
         return <LogoutClient />
     }
