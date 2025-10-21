@@ -21,6 +21,7 @@ export const AssetCard: React.FC<AssetCardProps> = ({ asset, ...props }) => {
         <div className={cn(
             "text-xs px-4 py-1 rounded-full ",
             asset.aiod_entry?.status === "draft" && "bg-gray-700",
+            asset.aiod_entry?.status === "submitted" && "bg-sky-700",
             asset.aiod_entry?.status === "published" && "bg-green-800",
             asset.aiod_entry?.status === "rejected" && "bg-red-800"
         )}>
