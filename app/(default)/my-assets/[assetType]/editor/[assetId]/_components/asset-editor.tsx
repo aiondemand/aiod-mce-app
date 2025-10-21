@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Resource } from "@/lib/server/types";
 import { AssetEditorForm } from "./asset-editor-form";
+import ReviewSection from "./review-section";
 
 
 interface AssetEditorProps {
@@ -55,13 +56,19 @@ const AssetEditor: React.FC<AssetEditorProps> = (props) => {
     return <div
         className="mt-4"
     >
-        <AssetEditorForm
-            isPending={isPending}
-            assetType={props.assetType}
-            buttonText={props.isNewAsset ? 'Create' : 'Update'}
-            onChange={props.isNewAsset ? handleCreate : handleUpdate}
-            asset={props.asset}
-        />
+        <div className="flex flex-col gap-4">
+            {!props.isNewAsset && (
+                <ReviewSection asset={props.asset} />
+            )}
+            <AssetEditorForm
+                isPending={isPending}
+                assetType={props.assetType}
+                buttonText={props.isNewAsset ? 'Create' : 'Update'}
+                onChange={props.isNewAsset ? handleCreate : handleUpdate}
+                asset={props.asset}
+            />
+
+        </div>
     </div>
 };
 

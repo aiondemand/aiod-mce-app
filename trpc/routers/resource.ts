@@ -78,4 +78,26 @@ export const resourceRouter = router({
             }
         }),
 
+    submitForReview: protectedProcedure.input(z.object({
+        comment: z.string(),
+        asset_identifiers: z.array(z.string()),
+    })).mutation(async ({ input, ctx }) => {
+        try {
+            return await AiodAPI.fetch<{
+                identifier?: string
+            }>('/submissions', ctx.token, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(input),
+            });
+        } catch (error) {
+            logger.error((error as Error).message);
+            throw new TRPCError({
+                code: 'INTERNAL_SERVER_ERROR',
+                message: 'Failed to submit for review',
+            });
+        }
+    }),
 });
