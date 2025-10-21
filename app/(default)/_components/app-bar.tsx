@@ -6,7 +6,7 @@ import UserButton from "./user-button";
 
 const AppBar = () => {
     return <div className="flex items-center justify-between pe-6">
-        <Link href="/"
+        <Link href="https://aiod.eu"
             className="flex items-center gap-2 justify-between"
         >
             <span className="w-[150px]">
