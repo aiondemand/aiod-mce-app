@@ -161,7 +161,6 @@ export const HasPartEditor: React.FC<HasPartEditorProps> = ({ value = [], onChan
                                     e.stopPropagation()
                                 }}
                                 onClick={() => handleRemove(id)}
-                                asChild
                             >
                                 <span>
                                     <X className="size-3" />
