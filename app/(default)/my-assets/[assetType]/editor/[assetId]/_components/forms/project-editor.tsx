@@ -18,6 +18,7 @@ import { useTRPC } from "@/trpc/client";
 import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 import { useQuery } from "@tanstack/react-query";
 import LogoutClient from "@/components/logout-client";
+import HasPartEditor from "../has-part-editor";
 
 
 interface ProjectEditorProps {
@@ -45,6 +46,7 @@ export const ProjectEditor: React.FC<ProjectEditorProps> = (props) => {
             start_date: undefined,
             end_date: undefined,
             industrial_sector: [],
+            has_part: [],
         },
     });
 
@@ -207,6 +209,28 @@ export const ProjectEditor: React.FC<ProjectEditorProps> = (props) => {
                                 </FormControl>
                                 <FormDescription>
                                     Select relevant business/industrial sectors for this project.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </FormSection>
+
+                <FormSection title="Related Assets">
+                    <FormField
+                        control={form.control}
+                        name="has_part"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Assets that are part of this project</FormLabel>
+                                <FormControl>
+                                    <HasPartEditor
+                                        value={field.value || []}
+                                        onChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    Add IDs of datasets, publications, or other assets that belong to this project.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
