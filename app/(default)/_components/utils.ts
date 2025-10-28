@@ -23,7 +23,7 @@ export const assetTypeToLabel = (assetType: string) => {
         case "publications":
             return "Publications";
         case "case_studies":
-            return "Case Studies";
+            return "Success Stories";
         case "news":
             return "News";
         case "events":
