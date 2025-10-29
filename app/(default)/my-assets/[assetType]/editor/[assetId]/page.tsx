@@ -19,7 +19,7 @@ export default async function Page({ params }: PageProps) {
 
     let content: React.ReactNode;
     if (!isNew) {
-        const assetResp = await getAsset(assetType, assetId);
+        const assetResp = await getAsset(assetType, assetId, true);
         if (assetResp.error) {
             if (assetResp.error === 'Unauthorized') {
                 return <LogoutClient />

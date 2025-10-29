@@ -15,8 +15,12 @@ export const getAssets = async (assetType: string, limit: number = 1000, offset:
         return { error: 'Unauthorized' };
     }
 
+    const queryParams = new URLSearchParams();
+    queryParams.set('limit', limit.toString());
+    queryParams.set('offset', offset.toString());
+
     try {
-        const response = await AiodAPI.fetch<Resource[]>(`/${assetType}?limit=${limit}&offset=${offset}`, session.accessToken, {
+        const response = await AiodAPI.fetch<Resource[]>(`/${assetType}?${queryParams.toString()}`, session.accessToken, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +40,7 @@ export const getAssets = async (assetType: string, limit: number = 1000, offset:
 
 }
 
-export const getAsset = async (assetType: string, assetId: string): Promise<{
+export const getAsset = async (assetType: string, assetId: string, get_image?: boolean): Promise<{
     error?: string;
     asset?: Resource;
 }> => {
@@ -46,7 +50,7 @@ export const getAsset = async (assetType: string, assetId: string): Promise<{
     }
 
     try {
-        const response = await AiodAPI.fetch<Resource>(`/${assetType}/${assetId}`, session.accessToken);
+        const response = await AiodAPI.fetch<Resource>(`/${assetType}/${assetId}${get_image ? '?get_image=true' : ''}`, session.accessToken);
 
         return {
             asset: response
