@@ -19,7 +19,7 @@ export const resourceRouter = router({
                     message: resp.error,
                 });
             }
-            return await getMyAssets();
+            return resp;
         } catch (error) {
             logger.error((error as Error).message);
             throw new TRPCError({

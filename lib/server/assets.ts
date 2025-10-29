@@ -111,7 +111,10 @@ export const createAsset = async (assetType: string, asset: Resource) => {
 
     } catch (error) {
         console.error(`Error creating ${assetType}:`, error);
-        return { error: 'Failed to create asset: ' + error };
+        if (error instanceof Error) {
+            return { error: 'Failed to create asset: ' + error.message };
+        }
+        return { error: 'Failed to create asset' };
     }
 }
 
@@ -122,6 +125,8 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
     }
 
     delete asset.aiod_entry
+
+
 
     try {
         const response = await AiodAPI.fetch<Resource>(`/${assetType}/${assetId}`, session.accessToken, {
@@ -139,7 +144,10 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
 
     } catch (error) {
         console.error(`Error updating ${assetType}:`, error);
-        return { error: 'Failed to update asset: ' + error };
+        if (error instanceof Error) {
+            return { error: 'Failed to update asset: ' + error.message };
+        }
+        return { error: 'Failed to update asset' };
     }
 }
 
@@ -161,6 +169,9 @@ export const deleteAsset = async (assetType: string, assetId: string) => {
 
     } catch (error) {
         console.error(`Error deleting ${assetType}:`, error);
+        if (error instanceof Error) {
+            return { error: 'Failed to delete asset: ' + error.message };
+        }
         return { error: 'Failed to delete asset' };
     }
 }
