@@ -37,6 +37,7 @@
     "react": "19.1.1",
     "react-day-picker": "^9.8.0",
     "react-dom": "19.1.1",
+    "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.56.3",
     "sonner": "^2.0.3",
     "superjson": "^2.2.2",
