@@ -20,7 +20,7 @@ const MyAssets = () => {
     );
 
 
-    if (isLoading) return <div className="flex items-center justify-center h-screen">
+    if (isLoading) return <div className="flex items-center justify-center grow">
         <Loader2 className="size-6 animate-spin me-4" />
         Loading resources...
     </div>
@@ -30,7 +30,7 @@ const MyAssets = () => {
         if (error?.message === 'UNAUTHORIZED') {
             return <LogoutClient />
         }
-        return <div className="flex items-center justify-center h-screen">
+        return <div className="flex items-center justify-center grow">
             <ErrorAlert
                 title="Error loading resources"
                 description={error?.message ?? 'Unknown error'}

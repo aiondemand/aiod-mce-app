@@ -12,12 +12,19 @@ import { AiodAPI } from '@/lib/server/common';
 export const resourceRouter = router({
     get: protectedProcedure.query(async () => {
         try {
-            return await getMyAssets();
+            const resp = await getMyAssets();
+            if (resp.error) {
+                throw new TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: resp.error,
+                });
+            }
+            return resp;
         } catch (error) {
             logger.error((error as Error).message);
             throw new TRPCError({
                 code: 'INTERNAL_SERVER_ERROR',
-                message: 'Failed to fetch data from AIOD API',
+                message: (error as Error)?.message || 'Failed to fetch data from AIOD API',
             });
         }
     }),

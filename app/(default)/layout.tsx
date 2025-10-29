@@ -9,25 +9,9 @@ export default function DefaultLayout({
     return (
         <div className="flex flex-col min-h-screen">
             <AppBar />
-            <main className="grow px-6">
+            <main className="px-6 flex flex-col grow">
                 {children}
             </main>
         </div>
     )
-
-    /* return (
-        <SidebarProvider>
-
-            <AppSidebar />
-            <SidebarInset>
-       <div className="flex flex-col min-h-screen">
-                    <AppBar />
-                    <main className="grow">
-                        {children}
-                    </main>
-                </div>
-            </SidebarInset>
-            <Toaster />
-        </SidebarProvider>
-    ); */
 }
