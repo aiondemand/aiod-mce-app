@@ -15,7 +15,6 @@ interface AssetEditorFormProps {
     onChange: (asset: Resource) => void;
     asset?: Resource;
     assetType: string;
-    onRefresh?: () => void;
 }
 
 export const AssetEditorForm: React.FC<AssetEditorFormProps> = (props) => {

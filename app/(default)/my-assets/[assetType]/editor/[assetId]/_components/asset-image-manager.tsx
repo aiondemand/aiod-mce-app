@@ -34,12 +34,12 @@ import Filepicker from "@/components/ui/filepicker";
 import { ImageIcon, Loader2, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { FileWithPath } from "react-dropzone";
+import { useRouter } from "next/navigation";
 
 interface AssetImageManagerProps {
     assetType: string;
     identifier: string;
     media?: Media[];
-    onUpdate: () => void;
 }
 
 type DialogMode = "add" | "replace" | null;
@@ -48,7 +48,6 @@ export function AssetImageManager({
     assetType,
     identifier,
     media = [],
-    onUpdate,
 }: AssetImageManagerProps) {
     const [dialogMode, setDialogMode] = useState<DialogMode>(null);
     const [selectedImage, setSelectedImage] = useState<Media | null>(null);
@@ -56,6 +55,7 @@ export function AssetImageManager({
     const [selectedFile, setSelectedFile] = useState<FileWithPath | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [isDeleting, setIsDeleting] = useState<string | null>(null);
+    const router = useRouter();
 
     const images = media || [];
 
@@ -172,7 +172,7 @@ export function AssetImageManager({
                     : "Image uploaded successfully"
             );
             closeDialog();
-            onUpdate();
+            router.refresh();
         } catch (error) {
             console.error("Upload error:", error);
             toast.error(
@@ -206,7 +206,7 @@ export function AssetImageManager({
             }
 
             toast.success("Image deleted successfully");
-            onUpdate();
+            router.refresh();
         } catch (error) {
             console.error("Delete error:", error);
             toast.error(
@@ -227,7 +227,7 @@ export function AssetImageManager({
                         </EmptyMedia>
                         <EmptyTitle>No images</EmptyTitle>
                         <EmptyDescription>
-                            Add images to showcase this organisation
+                            Add images to showcase this asset
                         </EmptyDescription>
                     </EmptyHeader>
                     <EmptyContent>

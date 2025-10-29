@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = process.env.BACKEND_URL || "";
@@ -116,6 +117,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         }
 
         const data = await response.json();
+        revalidatePath(`/my-assets/${assetType}/editor/${identifier}`);
         return NextResponse.json(data);
     } catch (error) {
         console.error("Error uploading image:", error);
@@ -203,7 +205,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
                 );
             }
         }
-
+        revalidatePath(`/my-assets/${assetType}/editor/${identifier}`);
         const data = await response.json();
         return NextResponse.json(data);
     } catch (error) {
@@ -253,6 +255,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
         }
 
         const data = await response.json();
+        revalidatePath(`/my-assets/${assetType}/editor/${identifier}`);
         return NextResponse.json(data);
     } catch (error) {
         console.error("Error deleting image:", error);

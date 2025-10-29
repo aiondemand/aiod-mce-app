@@ -111,7 +111,7 @@ export const createAsset = async (assetType: string, asset: Resource) => {
 
     } catch (error) {
         console.error(`Error creating ${assetType}:`, error);
-        return { error: 'Failed to create asset', detail: error };
+        return { error: 'Failed to create asset: ' + error };
     }
 }
 
@@ -139,7 +139,7 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
 
     } catch (error) {
         console.error(`Error updating ${assetType}:`, error);
-        return { error: 'Failed to update asset' };
+        return { error: 'Failed to update asset: ' + error };
     }
 }
 

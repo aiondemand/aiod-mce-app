@@ -37,9 +37,8 @@ class AiodAPIClient {
         });
 
         if (!response.ok) {
-            const msg = `API Error: ${response.status} ${response.statusText}`;
+            const msg = `API Error: ${response.status} ${response.statusText} ${await response.text()}`;
             logger.error(msg);
-            logger.error(await response.text());
             throw new Error(msg);
         }
         logger.debug(`API Response: ${response.status} ${response.statusText}`);

@@ -20,13 +20,13 @@ import LogoutClient from "@/components/logout-client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ContactDetailsEditor from "./contact-details-editor";
 import { AssetImageManager } from "../asset-image-manager";
+import { useEffect } from "react";
 
 interface OrganisationEditorProps {
     isPending: boolean;
     buttonText: string;
     onChange: (asset: Organisation) => void;
     asset?: Organisation;
-    onRefresh?: () => void;
 }
 
 export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => {
@@ -47,7 +47,6 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
         trpc.taxonomies.get.queryOptions({ taxonomyType: TaxonomyType.ORGANISATION_TYPES }),
     );
 
-
     const form = useForm<Organisation>({
         resolver: zodResolver(organisationSchema),
         defaultValues: props.asset ? props.asset : {
@@ -64,6 +63,10 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
         },
     });
 
+    useEffect(() => {
+        form.reset(props.asset);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.asset]);
 
     if (isLoadingIndustialSectors || isLoadingResearchAreas || isLoadingScientificDomains || isLoadingOrganisationTypes) return <LoadingTaxonomiesIndicator />;
     const hasUnauthorizedError = errorIndustialSectors?.message === 'UNAUTHORIZED' || errorResearchAreas?.message === 'UNAUTHORIZED' || errorScientificDomains?.message === 'UNAUTHORIZED' || errorOrganisationTypes?.message === 'UNAUTHORIZED';
@@ -89,7 +92,6 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
                             assetType="organisations"
                             identifier={props.asset.identifier}
                             media={props.asset.media}
-                            onUpdate={() => props.onRefresh?.()}
                         />
                     </FormSection>
                 )}

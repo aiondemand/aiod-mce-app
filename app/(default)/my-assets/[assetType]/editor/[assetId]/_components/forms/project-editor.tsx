@@ -19,6 +19,8 @@ import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 import { useQuery } from "@tanstack/react-query";
 import LogoutClient from "@/components/logout-client";
 import HasPartEditor from "../has-part-editor";
+import { AssetImageManager } from "../asset-image-manager";
+import { useEffect } from "react";
 
 
 interface ProjectEditorProps {
@@ -50,6 +52,11 @@ export const ProjectEditor: React.FC<ProjectEditorProps> = (props) => {
         },
     });
 
+    useEffect(() => {
+        form.reset(props.asset);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.asset]);
+
     if (isLoadingIndustialSectors) return <LoadingTaxonomiesIndicator />;
     const hasUnauthorizedError = errorIndustialSectors?.message === 'UNAUTHORIZED';
     if (hasUnauthorizedError) {
@@ -65,6 +72,16 @@ export const ProjectEditor: React.FC<ProjectEditorProps> = (props) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 pb-[74px]">
+                {props.asset?.identifier && (
+                    <FormSection title="Images">
+                        <AssetImageManager
+                            assetType="projects"
+                            identifier={props.asset.identifier}
+                            media={props.asset.media}
+                        />
+                    </FormSection>
+                )}
+
                 <FormSection title="Required Information">
                     <FormField
                         control={form.control}
