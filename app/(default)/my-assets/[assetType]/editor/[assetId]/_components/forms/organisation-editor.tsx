@@ -19,13 +19,14 @@ import LoadingTaxonomiesIndicator from "./loading-taxonomies-indicator";
 import LogoutClient from "@/components/logout-client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ContactDetailsEditor from "./contact-details-editor";
+import { AssetImageManager } from "../asset-image-manager";
 
 interface OrganisationEditorProps {
     isPending: boolean;
     buttonText: string;
     onChange: (asset: Organisation) => void;
     asset?: Organisation;
-
+    onRefresh?: () => void;
 }
 
 export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => {
@@ -82,6 +83,17 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 pb-[74px]">
+                {props.asset?.identifier && (
+                    <FormSection title="Images">
+                        <AssetImageManager
+                            assetType="organisations"
+                            identifier={props.asset.identifier}
+                            media={props.asset.media}
+                            onUpdate={() => props.onRefresh?.()}
+                        />
+                    </FormSection>
+                )}
+
                 <FormSection title="Required Information">
                     <FormField
                         control={form.control}

@@ -72,7 +72,7 @@ const MediaSchema = z.object({
   copyright: z.string().max(256).optional().describe(
     "Copyright information for the media."
   ),
-  content_url: z.string().max(1800).describe(
+  content_url: z.string().max(1800).optional().describe(
     "The URL of the media content."
   ),
   content_size_kb: z.number().int().optional().describe(
@@ -92,6 +92,9 @@ const MediaSchema = z.object({
   ),
   technology_readiness_level: z.number().int().min(1).max(9).optional().describe(
     "The technology readiness level (TRL) of the media. TRL 1 is the lowest and stands for 'Basic principles observed', TRL 9 is the highest and stands for 'actual system proven in operational environment'."
+  ),
+  binary_blob: z.string().optional().describe(
+    "Base64 encoded binary data of the media file."
   ),
 });
 

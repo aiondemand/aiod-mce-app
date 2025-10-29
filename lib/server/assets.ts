@@ -108,7 +108,7 @@ export const createAsset = async (assetType: string, asset: Resource) => {
 
     } catch (error) {
         console.error(`Error creating ${assetType}:`, error);
-        return { error: 'Failed to create asset' };
+        return { error: 'Failed to create asset', detail: error };
     }
 }
 
