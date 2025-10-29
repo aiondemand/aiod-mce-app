@@ -88,13 +88,6 @@ export function AssetImageManager({
             return;
         }
 
-        // Validate file size (1 MB = 1,048,576 bytes)
-        if (file.size > 1048576) {
-            toast.error("Image must be 1 MB or smaller");
-            setSelectedFile(null);
-            return;
-        }
-
         setSelectedFile(file);
 
         // Auto-fill filename from file name if adding new

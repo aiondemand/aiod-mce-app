@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = process.env.BACKEND_URL || "";
-const MAX_FILE_SIZE = 1048576; // 1 MB in bytes
 
 interface RouteParams {
     params: Promise<{
@@ -36,14 +35,6 @@ function validateImageType(base64Data: string): string | null {
     }
 
     return null;
-}
-
-function validateImageSize(base64Data: string): boolean {
-    // Base64 encoding increases size by ~33%, so we check the encoded size
-    // Actual decoded size will be smaller
-    const encodedSize = base64Data.length;
-    const approximateDecodedSize = (encodedSize * 3) / 4;
-    return approximateDecodedSize <= MAX_FILE_SIZE;
 }
 
 export async function POST(request: NextRequest, { params }: RouteParams) {
@@ -83,14 +74,6 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             );
         }
 
-        // Validate size
-        if (!validateImageSize(file)) {
-            return NextResponse.json(
-                { error: "Image size exceeds 1 MB limit" },
-                { status: 400 }
-            );
-        }
-
         // Forward to backend
         const backendUrl = `${BACKEND_URL}/${assetType}/${identifier}/image?name=${encodeURIComponent(
             name
@@ -118,10 +101,18 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
         if (!response.ok) {
             const errorText = await response.text();
-            return NextResponse.json(
-                { error: errorText || "Backend request failed" },
-                { status: response.status }
-            );
+            try {
+                const errorData = JSON.parse(errorText);
+                return NextResponse.json(
+                    { error: errorData.detail || errorText || "Backend request failed" },
+                    { status: response.status }
+                );
+            } catch {
+                return NextResponse.json(
+                    { error: errorText || "Backend request failed" },
+                    { status: response.status }
+                );
+            }
         }
 
         const data = await response.json();
@@ -172,14 +163,6 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             );
         }
 
-        // Validate size
-        if (!validateImageSize(file)) {
-            return NextResponse.json(
-                { error: "Image size exceeds 1 MB limit" },
-                { status: 400 }
-            );
-        }
-
         // Forward to backend
         const backendUrl = `${BACKEND_URL}/${assetType}/${identifier}/image?name=${encodeURIComponent(
             name
@@ -207,10 +190,18 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
         if (!response.ok) {
             const errorText = await response.text();
-            return NextResponse.json(
-                { error: errorText || "Backend request failed" },
-                { status: response.status }
-            );
+            try {
+                const errorData = JSON.parse(errorText);
+                return NextResponse.json(
+                    { error: errorData.detail || errorText || "Backend request failed" },
+                    { status: response.status }
+                );
+            } catch {
+                return NextResponse.json(
+                    { error: errorText || "Backend request failed" },
+                    { status: response.status }
+                );
+            }
         }
 
         const data = await response.json();
