@@ -83,6 +83,9 @@ export const getMyAssets = async (): Promise<{
         };
     } catch (error) {
         console.error('Error fetching my assets:', error);
+        if (error instanceof Error) {
+            return { error: error.message };
+        }
         return { error: 'Failed to fetch my assets' };
     }
 }

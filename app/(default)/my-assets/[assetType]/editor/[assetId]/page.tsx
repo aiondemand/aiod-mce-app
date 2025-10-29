@@ -48,13 +48,15 @@ export default async function Page({ params }: PageProps) {
     }
 
     return <>
-        <Button variant="ghost"
-            asChild>
-            <Link href={`/`}>
-                <ArrowLeftIcon className="w-4 h-4" />
-                Back to asset list
-            </Link>
-        </Button>
+        <div>
+            <Button variant="ghost"
+                asChild>
+                <Link href={`/`}>
+                    <ArrowLeftIcon className="w-4 h-4" />
+                    Back to asset list
+                </Link>
+            </Button>
+        </div>
 
         <div className="flex items-center gap-2 justify-between">
             <h1 className="text-2xl font-bold font-jura mt-4">
