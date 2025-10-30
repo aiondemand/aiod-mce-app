@@ -5,6 +5,7 @@ export const supportedAssetTypes = [
     "projects",
     "datasets",
     "case_studies",
+    "publications",
 ]
 
 export const assetTypeToLabel = (assetType: string) => {
@@ -34,6 +35,8 @@ export const assetTypeToLabel = (assetType: string) => {
             return "Organisations";
         case "persons":
             return "Persons";
+        case "publications":
+            return "Publications";
         case "projects":
             return "Projects";
         case "platforms":
