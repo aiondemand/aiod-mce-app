@@ -5,6 +5,7 @@ export const supportedAssetTypes = [
     "projects",
     "datasets",
     "case_studies",
+    "publications",
 ]
 
 export const assetTypeToLabel = (assetType: string) => {
