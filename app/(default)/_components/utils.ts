@@ -35,8 +35,6 @@ export const assetTypeToLabel = (assetType: string) => {
             return "Organisations";
         case "persons":
             return "Persons";
-        case "publications":
-            return "Publications";
         case "projects":
             return "Projects";
         case "platforms":
