@@ -71,50 +71,43 @@ const MyAssets = () => {
                             <div>
                                 <h3 className="font-semibold mb-2">About This App</h3>
                                 <p className="leading-relaxed">
-                                    This app provides a user-friendly interface for interacting with the AI on Demand Metadata Catalogue API.
-                                    It is designed to make it easier to manage assets without requiring any coding or technical expertise.
+                                    This is a web interface for creating and editing AIoD resources via the AIoD Metadata Catalogue API.
                                 </p>
                             </div>
 
                             <div>
                                 <p className="leading-relaxed">
-                                    Please note that the app does not support all API features. Its purpose is to let you view, create, edit, and delete assets that you own in the metadata catalogue.
-                                </p>
-                            </div>
-
-                            <div>
-                                <p className="leading-relaxed">
-                                    Before creating a new asset, please check whether it already exists in{' '}
+                                    Before adding new resources, please check whether they already exist in the{' '}
                                     <a
                                         href="https://mylibrary.aiod.eu"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-accent hover:underline inline-flex items-center gap-1"
                                     >
-                                        myLibrary
+                                        AI Catalogue
                                         <ExternalLink className="h-3 w-3" />
                                     </a>
-                                    . Some assets (e.g. from Hugging Face) may have been automatically imported into the catalogue, or may have been added by other contributors.
+                                    . AIoD automatically indexes datasets from Hugging Face, Zenodo, and OpenML, and models from OpenML, so your resources may already be present.
                                 </p>
                             </div>
 
                             <div className="flex gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-md border border-amber-200 dark:border-amber-900">
                                 <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
                                 <p className="text-amber-900 dark:text-amber-200 text-xs leading-relaxed">
-                                    <strong>Note:</strong> You cannot upload assets like datasets directly here. This app only manages metadata and allows you to link existing resources.
+                                    You cannot upload resources like datasets or models here, only register datasets hosted elsewhere, but you can use this app to manage metadata and link them to EU projects.
                                 </p>
                             </div>
 
                             <div className="pt-2 border-t">
                                 <p className="text-xs text-muted-foreground">
-                                    For more information, see the{' '}
+                                    <strong>Note:</strong> The AIoD API offers many more features than this app can support. If you want to automatically upload resources or provide more detailed information on them, please see the{' '}
                                     <a
-                                        href="https://aiondemand.github.io/AIOD-rest-api/"
+                                        href="https://aiod.eu/metadata-catalogue-rest-api/"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-accent hover:underline inline-flex items-center gap-1"
                                     >
-                                        AIOD REST API documentation
+                                        AIOD API documentation
                                         <ExternalLink className="h-3 w-3" />
                                     </a>
                                 </p>
