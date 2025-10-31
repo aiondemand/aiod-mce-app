@@ -260,7 +260,7 @@ export function AssetImageManager({
                                         {image.binary_blob ? (
                                             // eslint-disable-next-line @next/next/no-img-element
                                             <img
-                                                src={`data:${image.encoding_format || "image/png"};base64,${image.binary_blob}`}
+                                                src={`data:${image.encoding_format || "image/png"};base64,${atob(image.binary_blob)}`}
                                                 alt={image.name || "Image"}
                                                 className="w-full h-32 object-contain"
                                             />

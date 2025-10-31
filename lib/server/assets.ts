@@ -125,8 +125,7 @@ export const updateAsset = async (assetType: string, assetId: string, asset: Res
     }
 
     delete asset.aiod_entry
-
-
+    asset.media = [];
 
     try {
         const response = await AiodAPI.fetch<Resource>(`/${assetType}/${assetId}`, session.accessToken, {
