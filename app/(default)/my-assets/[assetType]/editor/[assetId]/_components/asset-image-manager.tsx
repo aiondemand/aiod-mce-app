@@ -152,7 +152,7 @@ export function AssetImageManager({
 
             const method = dialogMode === "replace" ? "PUT" : "POST";
             const response = await fetch(
-                `/api/assets/${assetType}/${identifier}/image?name=${encodeURIComponent(
+                `${process.env.NEXT_PUBLIC_BASEPATH}/api/assets/${assetType}/${identifier}/image?name=${encodeURIComponent(
                     filename.trim()
                 )}`,
                 {
