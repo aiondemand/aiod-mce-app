@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Dataset, datasetSchema, TaxonomyType } from "@/lib/server/types";
 import FormSection from "../form-section";
 import { SubmitSection } from "./submit-section";
+import { FormErrorDisplay } from "./form-error-display";
 import { Textarea } from "@/components/ui/textarea";
 import TaxonomySelector from "@/components/taxonomy-selector";
 import { convertTaxonomyToEntries } from "@/lib/taxonomy-utils";
@@ -169,6 +170,8 @@ export const DatasetEditor: React.FC<DatasetEditorProps> = (props) => {
                         buttonText={props.buttonText}
                     />
                 </div>
+
+                <FormErrorDisplay form={form} />
             </form>
         </Form>
     )
