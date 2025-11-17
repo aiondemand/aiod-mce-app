@@ -22,6 +22,7 @@ export const FormErrorDisplay = <T extends FieldValues = FieldValues>({ form }: 
                 <Link
                     href="https://aiod.eu/feedback/"
                     target="_blank"
+                    rel="noopener noreferrer"
                 >
                     Ask for help or give feedback
                     <ExternalLinkIcon className="w-4 h-4" />

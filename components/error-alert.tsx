@@ -23,6 +23,7 @@ export const ErrorAlert: React.FC<ErrorAlertProps> = ({ title, description }) =>
             <Link
                 href="https://aiod.eu/feedback/"
                 target="_blank"
+                rel="noopener noreferrer"
             >
                 Ask for help or give feedback
                 <ExternalLinkIcon className="w-4 h-4" />
