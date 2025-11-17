@@ -21,6 +21,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import ContactDetailsEditor from "./contact-details-editor";
 import { AssetImageManager } from "../asset-image-manager";
 import { useEffect } from "react";
+import { FormErrorDisplay } from "./form-error-display";
 
 interface OrganisationEditorProps {
     isPending: boolean;
@@ -281,19 +282,7 @@ export const OrganisationEditor: React.FC<OrganisationEditorProps> = (props) => 
                     />
                 </div>
 
-                {/* Debug information - remove in production */}
-                {process.env.NODE_ENV === 'development' && form.formState.errors && Object.keys(form.formState.errors).length > 0 && (
-                    <div className="mt-4 p-4 bg-red-800 rounded text-sm">
-                        <h4 className="font-bold">Debug Info:</h4>
-                        <p>Form valid: {form.formState.isValid ? 'Yes' : 'No'}</p>
-                        <p>Errors: {Object.keys(form.formState.errors).length}</p>
-                        {Object.keys(form.formState.errors).length > 0 && (
-                            <pre className="mt-2 text-xs">
-                                {JSON.stringify(form.formState.errors, null, 2)}
-                            </pre>
-                        )}
-                    </div>
-                )}
+                <FormErrorDisplay form={form} />
             </form>
         </Form>
     );

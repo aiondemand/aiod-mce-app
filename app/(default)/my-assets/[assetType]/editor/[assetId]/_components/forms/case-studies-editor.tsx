@@ -17,6 +17,7 @@ import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import LogoutClient from "@/components/logout-client";
 import { ProjectSelector } from "../project-selector";
+import { FormErrorDisplay } from "./form-error-display";
 
 interface CaseStudiesEditorProps {
     isPending: boolean;
@@ -263,6 +264,8 @@ export const CaseStudiesEditor: React.FC<CaseStudiesEditorProps> = (props) => {
                         buttonText={props.buttonText}
                     />
                 </div>
+
+                <FormErrorDisplay form={form} />
             </form>
         </Form>
     );
