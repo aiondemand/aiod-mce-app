@@ -111,7 +111,7 @@ const resourceBaseSchema = z.object({
   platform: z.string().optional(),
   platform_resource_identifier: z.string().optional(),
   name: z.string().min(2).max(256),
-  date_published: z.string().datetime().optional(),
+  date_published: z.string().optional(),
   date_deleted: z.string().datetime().optional(),
   same_as: z.string().max(256).optional(),
   aiod_entry: AiodEntrySchema.optional(),
@@ -127,7 +127,11 @@ const resourceBaseSchema = z.object({
   keyword: z.array(z.string()).optional(),
   location: z.array(LocationSchema).optional(),
   media: z.array(MediaSchema).optional(),
-  note: z.array(z.string().max(8000)).optional(),
+  note: z.array(
+    z.object({
+      value: z.string().max(8000),
+    }),
+  ).optional(),
   relevant_link: z.array(z.string()).optional(),
   relevant_resource: z.array(z.string()).optional(),
   relevant_to: z.array(z.string()).optional(),
